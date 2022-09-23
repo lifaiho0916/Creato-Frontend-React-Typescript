@@ -20,7 +20,7 @@ const Invitefriends = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
-  const token: any = JSON.parse(localStorage.getItem('dareme_token') || '{}')
+  const token: any = JSON.parse(localStorage.getItem(`${process.env.REACT_APP_CREATO_TOKEN}`) || '{}')
   const decoded: any = decode(token)
   const referral = useSelector((state: any) => state.referral.referralLink)
   const user = useSelector((state: any) => state.auth.user)

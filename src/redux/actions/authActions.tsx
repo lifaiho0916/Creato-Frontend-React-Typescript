@@ -14,7 +14,7 @@ export const authAction = {
       .then((result) => {
         const { data } = result;
         localStorage.clear();
-        localStorage.setItem('dareme_token', JSON.stringify(data.token));
+        localStorage.setItem(`${process.env.REACT_APP_CREATO_TOKEN}`, JSON.stringify(data.token));
         dispatch({ type: SET_USER, payload: data.user });
         if (data.firstLogin === false) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome2", state: true } })
         if (data.new) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome", state: true } })
@@ -28,7 +28,7 @@ export const authAction = {
       .then((result) => {
         const { data } = result;
         localStorage.clear();
-        localStorage.setItem('dareme_token', JSON.stringify(data.token));
+        localStorage.setItem(`${process.env.REACT_APP_CREATO_TOKEN}`, JSON.stringify(data.token));
         dispatch({ type: SET_USER, payload: data.user });
         if (data.firstLogin === false) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome2", state: true } })
         if (data.new) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome", state: true } })
@@ -45,7 +45,7 @@ export const authAction = {
       .then((result) => {
         const { data } = result;
         localStorage.clear();
-        localStorage.setItem('dareme_token', JSON.stringify(data.token));
+        localStorage.setItem(`${process.env.REACT_APP_CREATO_TOKEN}`, JSON.stringify(data.token));
         dispatch({ type: SET_USER, payload: data.user });
         if (data.firstLogin === false) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome2", state: true } })
         if (data.new) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome", state: true } })
@@ -59,7 +59,7 @@ export const authAction = {
       .then((result) => {
         const { data } = result;
         localStorage.clear();
-        localStorage.setItem('dareme_token', JSON.stringify(data.token));
+        localStorage.setItem(`${process.env.REACT_APP_CREATO_TOKEN}`, JSON.stringify(data.token));
         dispatch({ type: SET_USER, payload: data.user });
         if (data.firstLogin === false) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome2", state: true } })
         if (data.new) dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome", state: true } })
@@ -76,7 +76,7 @@ export const authAction = {
       .then((result) => {
         const { data } = result;
         localStorage.clear();
-        localStorage.setItem('dareme_token', JSON.stringify(data.token));
+        localStorage.setItem(`${process.env.REACT_APP_CREATO_TOKEN}`, JSON.stringify(data.token));
         dispatch({ type: SET_USER, payload: data.user });
         if (data.new) {
           dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome", state: true } });
@@ -90,7 +90,7 @@ export const authAction = {
       .then((result) => {
         const { data } = result;
         localStorage.clear();
-        localStorage.setItem('dareme_token', JSON.stringify(data.token));
+        localStorage.setItem(`${process.env.REACT_APP_CREATO_TOKEN}`, JSON.stringify(data.token));
         dispatch({ type: SET_USER, payload: data.user });
         if (data.new) {
           dispatch({ type: SET_DIALOG_STATE, payload: { type: "welcome", state: true } });

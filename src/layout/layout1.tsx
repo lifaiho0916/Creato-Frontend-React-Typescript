@@ -13,10 +13,10 @@ const Layout = (props: any) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const loadState = useSelector((state: any) => state.load);
-    const token: any = JSON.parse(localStorage.getItem('dareme_token') || '{}');
+    const token: any = JSON.parse(localStorage.getItem(`${process.env.REACT_APP_CREATO_TOKEN}`) || '{}');
     
     useEffect(() => {
-        if (localStorage.getItem('dareme_token')) {
+        if (localStorage.getItem(`${process.env.REACT_APP_CREATO_TOKEN}`)) {
             const decoded: any = decode(token);
             if(decoded.role !== "ADMIN") navigate("/");
             if (decoded.exp * 1000 < new Date().getTime()) dispatch(authAction.logout(navigate));

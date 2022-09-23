@@ -90,7 +90,7 @@ const Header = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("dareme_token");
+    const token = localStorage.getItem(`${process.env.REACT_APP_CREATO_TOKEN}`);
     if (token) {
       dispatch(authAction.getAuthData());
       const decodedToken: any = decode(JSON.parse(token));

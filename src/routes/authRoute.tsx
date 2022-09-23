@@ -26,7 +26,7 @@ const AuthRoute = (props: routeProps) => {
     const user = authState.user;
     const language = authState.lang;
     const location = useLocation();
-    const token: any = JSON.parse(localStorage.getItem('dareme_token') || '{}');
+    const token: any = JSON.parse(localStorage.getItem(`${process.env.REACT_APP_CREATO_TOKEN}`) || '{}');
 
     const walletChange = (wallet: any) => {
         const state = { ...user, wallet: wallet };
@@ -66,7 +66,7 @@ const AuthRoute = (props: routeProps) => {
 
     useEffect(() => {
         if (props.routeType === 'private') {
-            if (localStorage.getItem('dareme_token')) {
+            if (localStorage.getItem(`${process.env.REACT_APP_CREATO_TOKEN}`)) {
                 const decoded: any = decode(token);
                 if (decoded.exp * 1000 < new Date().getTime()) dispatch(authAction.logout(navigate));
             } else navigate("/");

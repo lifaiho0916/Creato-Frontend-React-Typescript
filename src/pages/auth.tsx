@@ -4,7 +4,6 @@ import { GoogleLogin } from "react-google-login";
 import AppleLogin from 'react-apple-login'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import CONSTANT from "../constants/constant";
 import Dialog from "../components/general/dialog";
 import { LanguageContext } from "../routes/authRoute";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../constants/awesomeIcons"
@@ -232,8 +231,8 @@ const Auth = (props: any) => {
             )}
           /> */}
           <AppleLogin
-            clientId="creatogether.io.apple.login.service"
-            redirectURI="https://creatogether.io/auth"
+            clientId={`${process.env.REACT_APP_APPLE_CLIENT_ID}`}
+            redirectURI={`${process.env.REACT_APP_APPLE_REDIRECT_URL}`}
             // clientId="dev.creatogether.io.apple.login.service"
             // redirectURI="https://dev8.creatogether.io/auth"
             callback={responseApple} // Catch the response
