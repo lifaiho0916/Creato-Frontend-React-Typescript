@@ -69,6 +69,7 @@ export const daremeAction = {
   },
 
   publishDareme: () => async (dispatch: Dispatch<any>) => {
+    dispatch({ type: SET_DAREME_DETAIL_INITIAL })
     api.publishDareme()
       .then((result) => {
         const { data } = result;

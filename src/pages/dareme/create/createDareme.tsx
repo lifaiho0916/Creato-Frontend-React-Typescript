@@ -424,7 +424,6 @@ const CreateDareme = () => {
                           : true
                       }
                       disabled={false}
-                      donuts={0}
                       dareTitle={daremeState.options[0] === undefined ||
                         daremeState.options[0].option.title === null ||
                         daremeState.options[0].option.title === '' ?
@@ -447,7 +446,6 @@ const CreateDareme = () => {
                           : true
                       }
                       disabled={false}
-                      donuts={0}
                       dareTitle={
                         daremeState.options[1] === undefined ||
                           daremeState.options[1].option.title === null ||
@@ -619,7 +617,6 @@ const CreateDareme = () => {
                       : true
                   }
                   disabled={false}
-                  donuts={0}
                   dareTitle={
                     daremeState.options[0] === undefined || daremeState.options[0].option.title === ''
                       ? `${contexts.CREATE_DAREME_LETTER.FIRST_DARE_OPTION}`
@@ -642,7 +639,6 @@ const CreateDareme = () => {
                       : true
                   }
                   disabled={false}
-                  donuts={0}
                   dareTitle={
                     daremeState.options[1] === undefined || daremeState.options[1].option.title === ''
                       ? `${contexts.CREATE_DAREME_LETTER.SECOND_DARE_OPTION}`

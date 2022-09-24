@@ -12,7 +12,6 @@ import Title from "../../../components/general/title";
 import CategoryBtn from "../../../components/general/categoryBtn";
 import Gif from "../../../components/general/gif";
 import { LanguageContext } from "../../../routes/authRoute";
-import CONSTANT from "../../../constants/constant";
 import { CreatoCoinIcon, RewardIcon } from '../../../assets/svg';
 import { SET_TEASER_FILE, SET_COVER_FILE, SET_DIALOG_STATE } from "../../../redux/types";
 import CreateDaremeGif from '../../../assets/img/create_dareme.gif';
@@ -38,9 +37,9 @@ const Preview = () => {
   };
 
   const onPublish = () => {
-    setOpenPublishDlg(false);
-    setIsCopied(false);
-    SaveDareInfo();
+    setOpenPublishDlg(false)
+    setIsCopied(false)
+    SaveDareInfo()
   };
 
   useEffect(() => {
@@ -220,6 +219,7 @@ const Preview = () => {
                     <DareOption
                       leading={false}
                       donuts={option.donuts}
+                      voters={0}
                       canVote={option.canVote}
                       dareTitle={option.option}
                       username={option.owner}
