@@ -287,7 +287,7 @@ const DaremeResult = () => {
                 text: 'Check My Donuts',
                 handleClick: () => {
                   setIsMyDonuts(false)
-                  navigate(`/${user.personalisedUrl}/wallet`)
+                  navigate(`/myaccount/wallet`)
                 }
               }
             ]}
