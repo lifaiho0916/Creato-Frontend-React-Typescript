@@ -156,4 +156,36 @@
     }
   }
 
+  .superfan-letters {
+    margin-top: 30px;
+
+    .superfan-top-letter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Lato';
+      font-style: normal;
+      font-weight: 800;
+      font-size: 24px;
+      line-height: 28px;
+      color: #54504E;
+    }
+
+    .superfan-letter {
+      margin: 20px 0px;
+      display: flex;
+      justify-content: center;
+
+      span {
+        width: 300px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 22px;
+        line-height: 26px;
+        color: #7E7875;
+      }
+    }
+  }
+
 }

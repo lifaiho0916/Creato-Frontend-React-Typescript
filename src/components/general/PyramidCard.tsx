@@ -1,5 +1,6 @@
+import { useContext } from "react"
 import Avatar from "./avatar"
-import { CreatoCoinIcon } from "../../assets/svg"
+import { CreatoCoinIcon, LikeIcon } from "../../assets/svg"
 import DmPyramid1 from "../../assets/img/dareme-pyramid1.png"
 import DmPyramid2 from "../../assets/img/dareme-pyramid2.png"
 import DmPyramid3 from "../../assets/img/dareme-pyramid3.png"
@@ -8,10 +9,12 @@ import FmPyramid1 from "../../assets/img/fundme-pyramid1.png"
 import FmPyramid2 from "../../assets/img/fundme-pyramid2.png"
 import FmPyramid3 from "../../assets/img/fundme-pyramid3.png"
 import FmPyramid4 from "../../assets/img/fundme-pyramid4.png"
+import { LanguageContext } from "../../routes/authRoute"
 import "../../assets/styles/PyramidCardStyle.scss"
 
 const PyramidCard = (props: any) => {
   const { percentage, itemType, owner } = props
+  const contexts = useContext(LanguageContext)
   const fmPyramids = [FmPyramid1, FmPyramid2, FmPyramid3, FmPyramid4]
   const dmPyramids = [DmPyramid1, DmPyramid2, DmPyramid3, DmPyramid4]
   const pyramids: any = itemType === "dareme" ? dmPyramids : fmPyramids
@@ -23,6 +26,10 @@ const PyramidCard = (props: any) => {
     (percentage >= 30 && percentage <= 49) ? 30 :
       (percentage >= 50 && percentage <= 69) ? 50 :
         (percentage >= 70 && percentage <= 89) ? 70 : 90
+  const letterNo: any = (percentage >= 1 && percentage <= 29) ? 0 :
+    (percentage >= 30 && percentage <= 49) ? 1 :
+      (percentage >= 50 && percentage <= 69) ? 2 :
+        (percentage >= 70 && percentage <= 89) ? 3 : 4
 
   return (
     <div className="pyramid-card-wrapper">
@@ -67,6 +74,16 @@ const PyramidCard = (props: any) => {
               : "linear-gradient(121.78deg, #14C3C9 0%, #14AFC9 29.13%, #14A5C9 54.17%, #1490C9 97.1%)"
           }}>
           <span>{owner.name}</span>
+        </div>
+      </div>
+      <div className="superfan-letters">
+        <div className="superfan-top-letter">
+          <LikeIcon color="#DE5A67" width={25} height={25} />&nbsp;<span>{contexts.PYRAMID_TOP_LETTERS[letterNo - 1]}</span>
+        </div>
+        <div className="superfan-letter">
+          <span>
+            {`${contexts.PYRAMID_SUPERFAN_LETTERS[letterNo - 1].FIRST_PART}${Math.round(percentage)}${contexts.PYRAMID_SUPERFAN_LETTERS[letterNo - 1].SECOND_PART}${contexts.PYRAMID_SUPERFAN_LETTERS[letterNo - 1].THIRD_PART !== "" ? owner.name : ''}${contexts.PYRAMID_SUPERFAN_LETTERS[letterNo - 1].THIRD_PART}`}
+          </span>
         </div>
       </div>
     </div>

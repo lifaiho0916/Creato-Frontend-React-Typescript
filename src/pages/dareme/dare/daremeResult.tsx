@@ -312,7 +312,7 @@ const DaremeResult = () => {
             <div className="detail-card">
               <PyramidCard
                 percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100}
-                itemType="fundme"
+                itemType="dareme"
                 owner={{
                   avatar: dareme.owner.avatar,
                   name: dareme.owner.name

@@ -146,6 +146,40 @@ export const CH = {
     "感謝語 📥",
     "限量版 T-shirt 👕👚"
   ],
+  PYRAMID_TOP_LETTERS: [
+    "頭號粉絲",
+    "忠實粉絲",
+    "最強支援",
+    "群眾之力",
+    "群情洶湧"
+  ],
+  PYRAMID_SUPERFAN_LETTERS: [
+    {
+      FIRST_PART: '霸氣外露！您在此 DareMe 帖子中 ',
+      SECOND_PART: '% SuperFans 的其中之一。',
+      THIRD_PART: ''
+    },
+    {
+      FIRST_PART: '一馬當先！您在此 DareMe 帖子中 ',
+      SECOND_PART: '% SuperFans 的其中之一。',
+      THIRD_PART: ''
+    },
+    {
+      FIRST_PART: '出色！您在此 DareMe 帖子中 ',
+      SECOND_PART: '% SuperFans 的其中之一。',
+      THIRD_PART: ''
+    },
+    {
+      FIRST_PART: '團結就是力量！您在此 DareMe 帖子中 ',
+      SECOND_PART: '% SuperFans 的其中之一。',
+      THIRD_PART: ''
+    },
+    {
+      FIRST_PART: '團結就是力量！您在此 DareMe 帖子中 ',
+      SECOND_PART: '% SuperFans 的其中之一。',
+      THIRD_PART: ''
+    },
+  ],
   DONUTS_RECEIVED: '已贊助的甜甜圈',
   YOU_NEED_MORE_DONUTS_TO_SUPPORT_CREATORS: '你需要更多的甜甜圈來支持創作者！',
   THE_BEST_WAY_FOR_CREATORS_FANS: `創作者和粉絲共同創作的最佳方式。🙌🏻`,

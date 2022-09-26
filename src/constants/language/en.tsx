@@ -146,6 +146,40 @@ export const EN = {
     "Private Thank-you message 📥",
     "Limited edition T-shirt 👕👚"
   ],
+  PYRAMID_TOP_LETTERS: [
+    "Top Fans",
+    "Loyalty Fans",
+    "Strongest Support",
+    "Full Team Assist",
+    "Groundswell of Support"
+  ],
+  PYRAMID_SUPERFAN_LETTERS: [
+    {
+      FIRST_PART: 'Excellent! You are one of the ',
+      SECOND_PART: '% SuperFans of ',
+      THIRD_PART: ' in this DareMe post.'
+    },
+    {
+      FIRST_PART: 'Mavellous! You are one of the ',
+      SECOND_PART: '% SuperFans of ',
+      THIRD_PART: ' in this DareMe post.'
+    },
+    {
+      FIRST_PART: 'Fantastics! You are one of the ',
+      SECOND_PART: '% SuperFans of ',
+      THIRD_PART: ' in this DareMe post.'
+    },
+    {
+      FIRST_PART: 'Amazing! You are one of the ',
+      SECOND_PART: '% SuperFans of ',
+      THIRD_PART: ' in this DareMe post.'
+    },
+    {
+      FIRST_PART: 'Wow! You are one of the ',
+      SECOND_PART: '% SuperFans of ',
+      THIRD_PART: ' in this DareMe post.'
+    }
+  ],
   DONUTS_RECEIVED: 'Donuts Received',
   YOU_NEED_MORE_DONUTS_TO_SUPPORT_CREATORS: 'You need more donuts to support creators!',
   THE_BEST_WAY_FOR_CREATORS_FANS: `The best way for Creators & Fans Communities to create together. 🙌🏻`,
