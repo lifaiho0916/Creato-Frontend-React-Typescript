@@ -19,6 +19,7 @@ import { LanguageContext } from "../../../routes/authRoute"
 import { CreatoCoinIcon, SpreadIcon, RewardIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
 import { SET_FANWALL_INITIAL, SET_DIALOG_STATE } from "../../../redux/types"
 import "../../../assets/styles/dareme/dare/daremeResultStyle.scss"
+import SuperfanPercentage from "../../../components/general/SuperfanPercentage"
 
 const DaremeResult = () => {
   const location = useLocation();
@@ -318,6 +319,9 @@ const DaremeResult = () => {
                   name: dareme.owner.name
                 }}
               />
+            </div>
+            <div className="detail-card">
+              <SuperfanPercentage percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100} />
             </div>
           </div>
           {/* <div className="dareme-result-videoCardDesktop">
