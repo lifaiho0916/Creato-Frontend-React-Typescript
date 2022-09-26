@@ -12,8 +12,8 @@ import Dialog from "../../../components/general/dialog"
 import VoteResult from "../../../components/general/VoteResult"
 import TopFan from "../../../components/general/TopFan"
 import ListSuperFans from "../../../components/general/ListSuperFans"
+import PyramidCard from "../../../components/general/PyramidCard"
 import RefundDlg from "../../../components/dareme/refundDlg"
-import WelcomeDlg from "../../../components/general/welcomeDlg"
 import CONSTANT from "../../../constants/constant"
 import { LanguageContext } from "../../../routes/authRoute"
 import { CreatoCoinIcon, SpreadIcon, RewardIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
@@ -49,8 +49,6 @@ const DaremeResult = () => {
   const [isMyDonuts, setIsMyDonuts] = useState(false)
   const [isSupport, setIsSupport] = useState(false)
   const [isCopyLink, setIsCopyLink] = useState(false)
-  const [openWelcomeDlg, setOpenWelcomeDlg] = useState(false)
-  const [openWelcomeDlg2, setOpenWelcomeDlg2] = useState(false)
   const user = userState.user;
 
   useEffect(() => {
@@ -80,14 +78,6 @@ const DaremeResult = () => {
   useEffect(() => {
     if (dlgState.state) {
       if (dlgState.type === 'refund_donuts') setRefund(true)
-    } else if (dlgState.type === 'welcome') {
-      if (dlgState.state) {
-        setOpenWelcomeDlg(true);
-      }
-    } else if (dlgState.type === 'welcome2') {
-      if (dlgState.state) {
-        setOpenWelcomeDlg2(true)
-      }
     }
   }, [dlgState])
 
@@ -122,54 +112,6 @@ const DaremeResult = () => {
       </div>
       {(maxOption && dareme.owner) &&
         <div className="dareme-result">
-          <Dialog
-            display={openWelcomeDlg}
-            title="Welcome to Creato"
-            exit={() => {
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } });
-              setOpenWelcomeDlg(false);
-            }}
-            wrapExit={() => {
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } });
-              setOpenWelcomeDlg(false);
-            }}
-            subcontext={true}
-            icon={
-              {
-                pos: 1,
-                icon: <RewardIcon color="#EFA058" width="60px" height="60px" />
-              }
-            }
-            buttons={[
-              {
-                text: "Go",
-                handleClick: () => {
-                  setOpenWelcomeDlg(false);
-                  dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } });
-                  navigate('/')
-                }
-              }
-            ]}
-          />
-          <WelcomeDlg
-            display={openWelcomeDlg2}
-            exit={() => {
-              setOpenWelcomeDlg2(false)
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } })
-            }}
-            wrapExit={() => {
-              setOpenWelcomeDlg2(false)
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } })
-            }}
-            buttons={[{
-              text: contexts.WELCOME_DLG.OK,
-              handleClick: () => {
-                setOpenWelcomeDlg2(false)
-                dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } })
-                navigate('/')
-              }
-            }]}
-          />
           <RefundDlg
             confirm={true}
             display={isSupport}
@@ -246,6 +188,7 @@ const DaremeResult = () => {
                 handleClick: () => {
                   setIsRefund(false)
                   setIsMyDonuts(true)
+                  dispatch({ type: SET_DIALOG_STATE, payload: { type: '', state: false } })
                   dispatch(daremeAction.refundDonuts(refundDonuts, daremeId))
                 }
               }
@@ -347,7 +290,9 @@ const DaremeResult = () => {
               </div>
               <div className="vote-info">
                 <CreatoCoinIcon color="black" />
-                <span>{dareme.donuts.toLocaleString()}</span>
+                <span>{dareme.donuts.toLocaleString()}</span>&nbsp;
+                <NoOfPeopleIcon color="black" />
+                <span>{dareme.voteInfo.length.toLocaleString()}</span>
               </div>
             </div>
             <div className="dareme-title">
@@ -363,6 +308,16 @@ const DaremeResult = () => {
             </div>
             <div className="detail-card">
               <TopFan topfans={dareme.voteInfo.sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
+            </div>
+            <div className="detail-card">
+              <PyramidCard
+                percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100}
+                itemType="fundme"
+                owner={{
+                  avatar: dareme.owner.avatar,
+                  name: dareme.owner.name
+                }}
+              />
             </div>
           </div>
           {/* <div className="dareme-result-videoCardDesktop">

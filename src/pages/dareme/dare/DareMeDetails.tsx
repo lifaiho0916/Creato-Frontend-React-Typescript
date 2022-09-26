@@ -10,7 +10,6 @@ import TeaserCardPopUp from "../../../components/general/TeaserCardPopUp"
 import { daremeAction } from "../../../redux/actions/daremeActions"
 import { LanguageContext } from "../../../routes/authRoute"
 import { BackIcon, ShareIcon, ClockIcon, CreatoCoinIcon, NoOfPeopleIcon, RewardIcon, PlayIcon, LightbulbIcon } from "../../../assets/svg"
-import CONSTANT from "../../../constants/constant"
 import "../../../assets/styles/dareme/dare/DareMeDetailsStyle.scss"
 
 const DareMeDetails = (props: any) => {

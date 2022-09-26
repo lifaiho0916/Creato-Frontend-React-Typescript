@@ -293,7 +293,7 @@ export const CH = {
     DONE: '完成'
   },
   DAREME_DETAILS: {
-    HAVE_IDEA: '我有另一個諗法！',
+    HAVE_IDEA: '我有新的點子',
     DARE_DISABLE: '最後24小時不可發送挑戰!',
     VOTE_NOW: '用冬甩支持吧',
     SEE_REQUESTS: '你的挑戰'
