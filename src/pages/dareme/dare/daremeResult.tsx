@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { daremeAction } from "../../../redux/actions/daremeActions"
 import ContainerBtn from "../../../components/general/containerBtn"
 import CategoryBtn from "../../../components/general/categoryBtn"
@@ -8,20 +8,20 @@ import Dialog from "../../../components/general/dialog"
 import VoteResult from "../../../components/general/VoteResult"
 import TopFan from "../../../components/general/TopFan"
 import ListSuperFans from "../../../components/general/ListSuperFans"
+import Missed from "../../../components/general/Missed"
 import PyramidCard from "../../../components/general/PyramidCard"
 import SuperfanPercentage from "../../../components/general/SuperfanPercentage"
 import RefundDlg from "../../../components/dareme/refundDlg"
-import CONSTANT from "../../../constants/constant"
 import { LanguageContext } from "../../../routes/authRoute"
 import { CreatoCoinIcon, SpreadIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
-import { SET_DIALOG_STATE } from "../../../redux/types"
+import { SET_DAREME_DETAIL_INITIAL, SET_DIALOG_STATE } from "../../../redux/types"
 import "../../../assets/styles/dareme/dare/daremeResultStyle.scss"
 
 const DaremeResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const contexts = useContext(LanguageContext);
+  const contexts = useContext(LanguageContext)
   const { daremeId } = useParams();
   const daremeState = useSelector((state: any) => state.dareme);
   const loadState = useSelector((state: any) => state.load);
@@ -48,11 +48,23 @@ const DaremeResult = () => {
   const [isCopyLink, setIsCopyLink] = useState(false)
   const [pyramid, setPyramid] = useState(false)
   const [topFan, setTopFan] = useState(false)
+  const [time, setTime] = useState(0)
+  const [flag, setFlag] = useState(false)
+  const [timerId, setTimerId] = useState<any>(null)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const code = searchParams.get("superfan")
 
   const showCard = () => {
     if (user) {
       const filters = dareme.voteInfo.filter((vote: any) => vote.voter._id === user.id && vote.superfan === true)
-      if (filters.length > 0) setPyramid(true)
+      if (filters.length > 0) {
+        if (code === null) setPyramid(true)
+        else {
+          if (code === 'true') setPyramid(true)
+          else setPyramid(false)
+        }
+      }
       else setPyramid(false)
     } else setPyramid(false)
     if (user && (user.id === dareme.owner._id || user.role === "ADMIN")) setTopFan(false)
@@ -60,12 +72,25 @@ const DaremeResult = () => {
   }
 
   useEffect(() => {
+    if (flag) {
+      if (timerId) clearInterval(timerId)
+      let id = setInterval(() => { setTime((time: any) => time - 1) }, 1000)
+      setTimerId(id)
+    }
+  }, [time, flag])
+  useEffect(() => {
     window.scrollTo(0, 0)
     dispatch(daremeAction.getDaremeResult(daremeId))
   }, [location, dispatch, daremeId])
 
   useEffect(() => {
     if (dareme.owner) {
+      if (dareme.finished === false && code === null) {
+        dispatch({ type: SET_DAREME_DETAIL_INITIAL })
+        navigate(`/dareme/details/${daremeId}`)
+      }
+      setTime(dareme.time)
+      setFlag(true)
       showCard()
       // let total = 0;
       // dareme.options.forEach((option: any) => { total += option.option.donuts; });
@@ -114,7 +139,7 @@ const DaremeResult = () => {
     <div className="dareme-result-wrapper">
       <div className="header-part">
         <div onClick={() => { navigate(loadState.prevRoute) }}><BackIcon color="black" /></div>
-        <div className="page-title"><span>{contexts.HEADER_TITLE.DAREME_RESULT}</span></div>
+        <div className="page-title"><span>{code === null ? contexts.HEADER_TITLE.DAREME_RESULT : 'You Have Voted'}</span></div>
         <div onClick={() => { if (dareme.owner && user && (dareme.owner._id === user.id || user.role === "ADMIN")) navigate(`/dareme/${daremeId}/voters`) }}>
           {(dareme.owner && user && (dareme.owner._id === user.id || user.role === "ADMIN")) && <NoOfPeopleIcon color="#938D8A" />}
         </div>
@@ -293,11 +318,11 @@ const DaremeResult = () => {
             daremeTitle={dareme.title}
           />
           <div className="dareme-result-header"
-            style={{ maxWidth: ((pyramid === true && topFan === true) || topFan === false) ? '1100px' : '720px' }}
+            style={{ maxWidth: ((pyramid === false && topFan === true && code !== null) || (pyramid === true && topFan === true) || topFan === false) ? '1100px' : '720px' }}
           >
             <div className="left-time-vote-info">
               <div className="left-time">
-                <span>{displayTime(dareme.time)}</span>
+                <span>{displayTime(time)}</span>
               </div>
               <div className="vote-info">
                 <CreatoCoinIcon color="black" />
@@ -314,7 +339,7 @@ const DaremeResult = () => {
             {pyramid === true &&
               <div className="detail-card">
                 <PyramidCard
-                  percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100}
+                  percentage={dareme.voteInfo.filter((vote: any) => vote.superfan === true).length / dareme.voteInfo.length * 100}
                   itemType="dareme"
                   owner={{
                     avatar: dareme.owner.avatar,
@@ -323,7 +348,17 @@ const DaremeResult = () => {
                 />
               </div>
             }
-
+            {(pyramid === false && code === 'false') &&
+              <div className="detail-card">
+                <Missed
+                  rewardText={dareme.rewardText}
+                  item={{
+                    id: daremeId,
+                    type: "dareme"
+                  }}
+                />
+              </div>
+            }
             <div className="detail-card">
               <VoteResult options={dareme.options} />
             </div>
@@ -343,56 +378,7 @@ const DaremeResult = () => {
               </div>
             }
           </div>
-          {/* <div className="dareme-result-videoCardDesktop">
-            <VideoCardDesktop
-              url={`${process.env.REACT_APP_SERVER_URL}/${dareme.teaser}`}
-              sizeType={dareme.sizeType}
-              coverImage={dareme.cover ? `${process.env.REACT_APP_SERVER_URL}/${dareme.cover}` : ""}
-            />
-            <AvatarLink
-              username={dareme.owner.name}
-              avatar={dareme.owner.avatar}
-              ownerId={dareme.owner._id}
-              handleAvatar={() => { navigate(`/${dareme.owner.personalisedUrl}`) }}
-              daremeId={dareme._id}
-            />
-          </div>
-          <div className="dareme-result-information">
-            <div className="dareme-result-videoCardMobile">
-              <VideoCardMobile
-                url={process.env.REACT_APP_SERVER_URL + "/" + dareme.teaser}
-                title={dareme.title}
-                time={dareme.time}
-                finished={dareme.finished}
-                donuts={totalDonuts}
-                category={contexts.DAREME_CATEGORY_LIST[dareme.category - 1]}
-                sizeType={dareme.sizeType}
-                coverImage={dareme.cover ? `${process.env.REACT_APP_SERVER_URL}/${dareme.cover}` : ""}
-              />
-              <AvatarLink
-                avatar={dareme.owner.avatar}
-                username={dareme.owner.name}
-                ownerId={dareme.owner._id}
-                handleAvatar={() => { navigate(`/${dareme.owner.personalisedUrl}`) }}
-                daremeId={dareme._id}
-                isFundme={true}
-              />
-            </div>
-            <div className="desktop-header-info">
-              <div className="time-info">
-                <div className="left-time">
-                  {displayTime(dareme.time)}
-                </div>
-                <div className="vote-info">
-                  <CreatoCoinIcon color="black" />
-                  <span>{totalDonuts !== null ? totalDonuts.toLocaleString() : ''}</span>
-                </div>
-              </div>
-              <div className="dare-title">{dareme.title}</div>
-              <div className="dare-category">
-                <CategoryBtn text={contexts.DAREME_CATEGORY_LIST[dareme.category - 1]} color="primary" />
-              </div>
-            </div>
+          {/*
             <div className="result-info">
               <div className="result-win-options">
                 {resultOptions.length > 0 &&

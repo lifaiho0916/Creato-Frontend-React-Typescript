@@ -9,7 +9,6 @@ import DareOption from "../../../components/general/dareOption"
 import Dialog from "../../../components/general/dialog"
 import ContainerBtn from "../../../components/general/containerBtn"
 import Gif from "../../../components/general/gif"
-import CONSTANT from "../../../constants/constant"
 import { LanguageContext } from "../../../routes/authRoute"
 import { HotIcon, LightbulbIcon, BackIcon } from "../../../assets/svg"
 import SignDialog from "../../../components/general/signDialog"
@@ -66,8 +65,9 @@ const SupportCreator = () => {
   }, [dareme, optionId])
   useEffect(() => {
     if (dlgState.type === 'vote_superfan' && dlgState.state === true) {
-      setIsCopyLink(true)
-      setVoteSuperfanGif(true)
+      // setIsCopyLink(true)
+      // setVoteSuperfanGif(true)
+      navigate(`/dareme/result/${daremeId}?superfan=true`)
     }
   }, [dlgState])
   useEffect(() => {

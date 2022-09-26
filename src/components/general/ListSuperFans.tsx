@@ -1,6 +1,5 @@
 import Avatar from "./avatar"
 import { CreatoCoinIcon, WinningIcon } from "../../assets/svg"
-import CONSTANT from "../../constants/constant"
 import "../../assets/styles/ListSuperFansStyle.scss"
 
 const ListSuperFans = (props: any) => {

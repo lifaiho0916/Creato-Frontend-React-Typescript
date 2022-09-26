@@ -10,7 +10,6 @@ import DareOption from "../../../components/general/dareOption"
 import Gif from "../../../components/general/gif"
 import { LanguageContext } from "../../../routes/authRoute"
 import { SET_DIALOG_STATE, SET_PREVIOUS_ROUTE } from "../../../redux/types"
-import CONSTANT from "../../../constants/constant"
 import { BackIcon } from "../../../assets/svg"
 import VoteNonSuperfanGif from '../../../assets/img/vote_non_superfan.gif'
 import VoteSuperfanGif from '../../../assets/img/vote_superfan.gif'
@@ -66,11 +65,13 @@ const DonutWish = () => {
 
   useEffect(() => {
     if (dlgState.type === 'vote_non_superfan' && dlgState.state === true) {
-      setIsCopyLink(true)
-      setVoteNonSuperfanGif(true)
+      // setIsCopyLink(true)
+      // setVoteNonSuperfanGif(true)
+      navigate(`/dareme/result/${daremeId}?superfan=false`)
     } else if (dlgState.type === 'vote_superfan' && dlgState.state === true) {
-      setIsCopyLink(true)
-      setVoteSuperfanGif(true)
+      // setIsCopyLink(true)
+      // setVoteSuperfanGif(true)
+      navigate(`/dareme/result/${daremeId}?superfan=true`)
     }
   }, [dlgState])
 
