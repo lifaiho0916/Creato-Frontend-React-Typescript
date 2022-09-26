@@ -11,7 +11,6 @@ import Title from "../../../components/general/title";
 import CategoryBtn from "../../../components/general/categoryBtn";
 import Gif from "../../../components/general/gif";
 import { LanguageContext } from "../../../routes/authRoute";
-import CONSTANT from "../../../constants/constant";
 import { CreatoCoinIcon, HotIcon, RewardIcon } from '../../../assets/svg';
 import { SET_TEASER_FILE1, SET_COVER_FILE1, SET_DIALOG_STATE } from "../../../redux/types";
 import CreateFundMeGif from '../../../assets/img/create_fundme.gif';
@@ -33,7 +32,7 @@ const FundmePreview = () => {
   const user = userState.user;
 
   const SaveFundInfo = () => {
-    dispatch(fundmeAction.publishFundme());
+    dispatch(fundmeAction.publishFundme())
   };
 
   const onPublish = () => {

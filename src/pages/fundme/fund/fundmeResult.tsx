@@ -1,18 +1,19 @@
 import { useEffect, useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { fundmeAction } from "../../../redux/actions/fundmeActions"
-import VideoCardDesktop from "../../../components/dareme/videoCardDesktop"
-import AvatarLink from "../../../components/dareme/avatarLink"
-import VideoCardMobile from "../../../components/dareme/videoCardMobile"
 import ContainerBtn from "../../../components/general/containerBtn"
 import CategoryBtn from "../../../components/general/categoryBtn"
+import PyramidCard from "../../../components/general/PyramidCard"
+import Missed from "../../../components/general/Missed"
+import SuperfanPercentage from "../../../components/general/SuperfanPercentage"
+import ListSuperFans from "../../../components/general/ListSuperFans"
+import TopFan from "../../../components/general/TopFan"
+import FundMeTarget from "../../../components/general/FundMeTarget"
 import Dialog from "../../../components/general/dialog"
-import WelcomeDlg from "../../../components/general/welcomeDlg"
-import CONSTANT from "../../../constants/constant"
 import { LanguageContext } from "../../../routes/authRoute"
 import { CreatoCoinIcon, RewardIcon, SpreadIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
-import { SET_FANWALL_INITIAL, SET_DIALOG_STATE } from "../../../redux/types"
+import { SET_FUNDME_DETAIL_INITIAL } from "../../../redux/types"
 import "../../../assets/styles/fundme/fund/fundmeResultStyle.scss"
 
 const FundmeResult = () => {
@@ -29,24 +30,58 @@ const FundmeResult = () => {
   const prevRoute = useSelector((state: any) => state.load.prevRoute)
   const [isStay, setIsStay] = useState(false);
   const [isReward, setIsReward] = useState(false);
-  const [openWelcomeDlg, setOpenWelcomeDlg] = useState(false)
-  const [openWelcomeDlg2, setOpenWelcomeDlg2] = useState(false)
 
   const { fundme } = fundmeState
   const { fanwall } = fanwallState
   const { user } = userState
 
-  const displayProcess = (length: any) => {
-    const interval = fundme.goal ? (Number(fundme.goal) / 20).toFixed(1) : 0
-    const count = fundme.goal ? Number(Math.floor(Number(fundme.wallet) / Number(interval))) : 0
-    const width = fundme.wallet < interval ? Math.floor(Number(interval) / Number(fundme.goal) * length) : Math.floor(Number(interval) * count / Number(fundme.goal) * length)
-    return width
+  const [pyramid, setPyramid] = useState(false)
+  const [topFan, setTopFan] = useState(false)
+  const [time, setTime] = useState(0)
+  const [flag, setFlag] = useState(false)
+  const [timerId, setTimerId] = useState<any>(null)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const code = searchParams.get("superfan")
+
+  const showCard = () => {
+    if (user) {
+      const filters = fundme.voteInfo.filter((vote: any) => vote.voter._id === user.id && vote.superfan === true)
+      if (filters.length > 0) {
+        if (code === null) setPyramid(true)
+        else {
+          if (code === 'true') setPyramid(true)
+          else setPyramid(false)
+        }
+      }
+      else setPyramid(false)
+    } else setPyramid(false)
+    if (user && (user.id === fundme.owner._id || user.role === "ADMIN")) setTopFan(false)
+    else setTopFan(true)
   }
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fundmeAction.getFundmeResult(fundmeId))
-  }, [location, dispatch, fundmeId]);
+  }, [location, dispatch, fundmeId])
+  useEffect(() => {
+    if (flag) {
+      if (timerId) clearInterval(timerId)
+      let id = setInterval(() => { setTime((time: any) => time - 1) }, 1000)
+      setTimerId(id)
+    }
+  }, [time, flag])
+  useEffect(() => {
+    if (fundme.owner) {
+      if (fundme.finished === false && code === null) {
+        dispatch({ type: SET_FUNDME_DETAIL_INITIAL })
+        navigate(`/fundme/details/${fundmeId}`)
+      }
+      setTime(fundme.time)
+      setFlag(true)
+      showCard()
+    }
+  }, [fundme])
 
   const displayTime = (left: any) => {
     let res: any
@@ -68,73 +103,17 @@ const FundmeResult = () => {
     return res
   }
 
-  useEffect(() => {
-    if (dlgState.type === 'welcome') {
-      if (dlgState.state) setOpenWelcomeDlg(true)
-    } else if (dlgState.type === 'welcome2') {
-      if (dlgState.state) setOpenWelcomeDlg2(true)
-    }
-  }, [dlgState])
-
   return (
     <div className="fundme-result-wrapper">
       <div className="header-part">
         <div onClick={() => { navigate(prevRoute) }}><BackIcon color="black" /></div>
-        <div className="page-title"><span>{contexts.HEADER_TITLE.FUNDME_RESULT}</span></div>
+        <div className="page-title"><span>{code === null ? contexts.HEADER_TITLE.FUNDME_RESULT : 'You Have Funded'}</span></div>
         <div onClick={() => { if (fundme.owner && user && (fundme.owner._id === user.id || user.role === "ADMIN")) navigate(`/fundme/${fundmeId}/voters`) }}>
           {(fundme.owner && user && (fundme.owner._id === user.id || user.role === "ADMIN")) && <NoOfPeopleIcon color="#938D8A" />}
         </div>
       </div>
       {fundme.owner &&
         <>
-          <Dialog
-            display={openWelcomeDlg}
-            title="Welcome to Creato"
-            exit={() => {
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } });
-              setOpenWelcomeDlg(false);
-            }}
-            wrapExit={() => {
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } });
-              setOpenWelcomeDlg(false);
-            }}
-            subcontext={true}
-            icon={
-              {
-                pos: 1,
-                icon: <RewardIcon color="#EFA058" width="60px" height="60px" />
-              }
-            }
-            buttons={[
-              {
-                text: "Go",
-                handleClick: () => {
-                  setOpenWelcomeDlg(false);
-                  dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } });
-                  navigate('/')
-                }
-              }
-            ]}
-          />
-          <WelcomeDlg
-            display={openWelcomeDlg2}
-            exit={() => {
-              setOpenWelcomeDlg2(false)
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } })
-            }}
-            wrapExit={() => {
-              setOpenWelcomeDlg2(false)
-              dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } })
-            }}
-            buttons={[{
-              text: contexts.WELCOME_DLG.OK,
-              handleClick: () => {
-                setOpenWelcomeDlg2(false)
-                dispatch({ type: SET_DIALOG_STATE, payload: { type: "", state: false } })
-                navigate('/')
-              }
-            }]}
-          />
           <Dialog
             display={isReward}
             exit={() => { setIsReward(false) }}
@@ -159,57 +138,68 @@ const FundmeResult = () => {
             }}
           />
           <div className="fundme-result">
-            <div className="fundme-result-videoCardDesktop">
-              <VideoCardDesktop
-                url={process.env.REACT_APP_SERVER_URL + "/" + fundme.teaser}
-                sizeType={fundme.sizeType}
-                coverImage={fundme.cover ? `${process.env.REACT_APP_SERVER_URL}/${fundme.cover}` : ""}
-              />
-              <AvatarLink
-                avatar={fundme.owner.avatar}
-                username={fundme.owner.name}
-                ownerId={fundme.owner._id}
-                handleAvatar={() => { navigate(`/${fundme.owner.personalisedUrl}`) }}
-                daremeId={fundme._id}
-                isFundme={true}
-              />
+            <div className="fundme-result-header"
+              style={{ maxWidth: ((pyramid === false && topFan === true && code !== null) || (pyramid === true && topFan === true) || topFan === false) ? '1100px' : '720px' }}
+            >
+              <div className="left-time-vote-info">
+                <div className="left-time">
+                  <span>{displayTime(time)}</span>
+                </div>
+                <div className="vote-info">
+                  <CreatoCoinIcon color="black" />
+                  <span>{fundme.wallet.toLocaleString()}</span>&nbsp;
+                  <NoOfPeopleIcon color="black" />
+                  <span>{fundme.voteInfo.length.toLocaleString()}</span>
+                </div>
+              </div>
+              <div className="fundme-title">
+                <span>{fundme.title}</span>
+              </div>
             </div>
-            <div className="fundme-result-information">
-              <div className="fundme-result-videoCardMobile">
-                <VideoCardMobile
-                  url={process.env.REACT_APP_SERVER_URL + "/" + fundme.teaser}
-                  title={fundme.title}
-                  time={fundme.time}
-                  finished={fundme.finished}
-                  donuts={fundme.wallet}
-                  category={contexts.FUNDME_CATEGORY_LIST[fundme.category - 1]}
-                  sizeType={fundme.sizeType}
-                  coverImage={fundme.cover ? `${process.env.REACT_APP_SERVER_URL}/${fundme.cover}` : ""}
-                />
-                <AvatarLink
-                  avatar={fundme.owner.avatar}
-                  username={fundme.owner.name}
-                  ownerId={fundme.owner._id}
-                  handleAvatar={() => { navigate(`/${fundme.owner.personalisedUrl}`) }}
-                  daremeId={fundme._id}
-                  isFundme={true}
-                />
-              </div>
-              <div className="desktop-header-info">
-                <div className="time-info">
-                  <div className="left-time">
-                    {displayTime(fundme.time)}
-                  </div>
-                  <div className="vote-info">
-                    <CreatoCoinIcon color="black" />
-                    <span>{fundme.wallet}</span>
-                  </div>
+            <div className="fundme-result-detail">
+              {pyramid === true &&
+                <div className="fundme-card">
+                  <PyramidCard
+                    percentage={fundme.voteInfo.filter((vote: any) => vote.superfan === true).length / fundme.voteInfo.length * 100}
+                    itemType="fundme"
+                    owner={{
+                      avatar: fundme.owner.avatar,
+                      name: fundme.owner.name
+                    }}
+                  />
                 </div>
-                <div className="dare-title">{fundme.title}</div>
-                <div className="dare-category">
-                  <CategoryBtn text={contexts.FUNDME_CATEGORY_LIST[fundme.category - 1]} color="primary" />
+              }
+              {(pyramid === false && code === 'false') &&
+                <div className="fundme-card">
+                  <Missed
+                    rewardText={fundme.rewardText}
+                    item={{
+                      id: fundmeId,
+                      type: "fundme"
+                    }}
+                  />
                 </div>
+              }
+              <div className="fundme-card">
+                <FundMeTarget wallet={fundme.wallet} goal={fundme.goal} />
               </div>
+              {topFan === false &&
+                <div className="fundme-card">
+                  <ListSuperFans voters={fundme.voteInfo.filter((vote: any) => vote.superfan === true).sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
+                </div>
+              }
+              {topFan === true &&
+                <div className="fundme-card">
+                  <TopFan topfans={fundme.voteInfo.sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
+                </div>
+              }
+              {topFan === false &&
+                <div className="fundme-card">
+                  <SuperfanPercentage percentage={fundme.voteInfo.filter((vote: any) => vote.superfan).length / fundme.voteInfo.length * 100} />
+                </div>
+              }
+            </div>
+            {/* 
               <div className="funding-goal">
                 <div className="title">
                   <CreatoCoinIcon color="#EFA058" />
@@ -263,7 +253,7 @@ const FundmeResult = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </>
       }

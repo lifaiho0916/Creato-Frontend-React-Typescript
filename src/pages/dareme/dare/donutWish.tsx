@@ -67,10 +67,12 @@ const DonutWish = () => {
     if (dlgState.type === 'vote_non_superfan' && dlgState.state === true) {
       // setIsCopyLink(true)
       // setVoteNonSuperfanGif(true)
+      dispatch({ type: SET_DIALOG_STATE, payload: { type: '', state: false } })
       navigate(`/dareme/result/${daremeId}?superfan=false`)
     } else if (dlgState.type === 'vote_superfan' && dlgState.state === true) {
       // setIsCopyLink(true)
       // setVoteSuperfanGif(true)
+      dispatch({ type: SET_DIALOG_STATE, payload: { type: '', state: false } })
       navigate(`/dareme/result/${daremeId}?superfan=true`)
     }
   }, [dlgState])

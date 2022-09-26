@@ -96,8 +96,10 @@ const FundMeDetails = (props: any) => {
 
   useEffect(() => {
     if (dlgState.type === 'vote_superfan' && dlgState.state === true) {
-      setOpenFundCopyLink(true)
-      setVoteSuperfanGif(true)
+      // setOpenFundCopyLink(true)
+      // setVoteSuperfanGif(true)
+      dispatch({ type: SET_DIALOG_STATE, payload: { type: '', state: false } })
+      navigate(`/fundme/result/${fundmeId}?superfan=true`)
     }
   }, [dlgState])
 

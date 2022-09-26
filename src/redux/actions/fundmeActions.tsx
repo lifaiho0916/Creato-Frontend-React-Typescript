@@ -117,9 +117,10 @@ export const fundmeAction = {
   },
 
   publishFundme: () => async (dispatch: Dispatch<any>) => {
+    dispatch({ type: SET_FUNDME_DETAIL_INITIAL })
     api.publishFundme()
       .then((result) => {
-        const { data } = result;
+        const { data } = result
         if (data.success) dispatch({ type: SET_DIALOG_STATE, payload: { type: 'create_fundme', state: true } })
       }).catch((err) => console.log(err));
   },
