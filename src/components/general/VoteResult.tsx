@@ -11,7 +11,7 @@ const VoteResult = (props: any) => {
       </div>
       <div className="vote-options scroll-bar">
         {options.map((option: any, index: any) => (
-          <div className="option">
+          <div className="option" key={index}>
             <div className="rank" style={{ backgroundColor: index === 0 ? '#EA8426' : index === 1 ? '#F7BA1E' : index === 2 ? '#14C9C9' : '#D6D5CC' }}>
               <span>#{index + 1}</span>
             </div>

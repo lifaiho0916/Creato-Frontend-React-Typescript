@@ -2,24 +2,20 @@ import { useEffect, useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { daremeAction } from "../../../redux/actions/daremeActions"
-import VideoCardDesktop from "../../../components/dareme/videoCardDesktop"
-import VideoCardMobile from "../../../components/dareme/videoCardMobile"
-import AvatarLink from "../../../components/dareme/avatarLink"
 import ContainerBtn from "../../../components/general/containerBtn"
-import DareOption from "../../../components/general/dareOption"
 import CategoryBtn from "../../../components/general/categoryBtn"
 import Dialog from "../../../components/general/dialog"
 import VoteResult from "../../../components/general/VoteResult"
 import TopFan from "../../../components/general/TopFan"
 import ListSuperFans from "../../../components/general/ListSuperFans"
 import PyramidCard from "../../../components/general/PyramidCard"
+import SuperfanPercentage from "../../../components/general/SuperfanPercentage"
 import RefundDlg from "../../../components/dareme/refundDlg"
 import CONSTANT from "../../../constants/constant"
 import { LanguageContext } from "../../../routes/authRoute"
-import { CreatoCoinIcon, SpreadIcon, RewardIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
-import { SET_FANWALL_INITIAL, SET_DIALOG_STATE } from "../../../redux/types"
+import { CreatoCoinIcon, SpreadIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
+import { SET_DIALOG_STATE } from "../../../redux/types"
 import "../../../assets/styles/dareme/dare/daremeResultStyle.scss"
-import SuperfanPercentage from "../../../components/general/SuperfanPercentage"
 
 const DaremeResult = () => {
   const location = useLocation();
@@ -32,9 +28,9 @@ const DaremeResult = () => {
   const fanwallState = useSelector((state: any) => state.fanwall);
   const userState = useSelector((state: any) => state.auth);
   const dlgState = useSelector((state: any) => state.load.dlgState)
-  const dareme = daremeState.dareme;
-  const refundDonuts = daremeState.refundDonuts
-  const fanwall = fanwallState.fanwall;
+  const { dareme, refundDonuts } = daremeState
+  const { fanwall } = fanwallState
+  const { user } = userState
   const [totalDonuts, setTotalDonuts] = useState(0)
   const [resultOptions, setResultOptions] = useState<Array<any>>([])
   const [maxOption, setMaxOption] = useState<any>(null)
@@ -50,22 +46,34 @@ const DaremeResult = () => {
   const [isMyDonuts, setIsMyDonuts] = useState(false)
   const [isSupport, setIsSupport] = useState(false)
   const [isCopyLink, setIsCopyLink] = useState(false)
-  const user = userState.user;
+  const [pyramid, setPyramid] = useState(false)
+  const [topFan, setTopFan] = useState(false)
+
+  const showCard = () => {
+    if (user) {
+      const filters = dareme.voteInfo.filter((vote: any) => vote.voter._id === user.id && vote.superfan === true)
+      if (filters.length > 0) setPyramid(true)
+      else setPyramid(false)
+    } else setPyramid(false)
+    if (user && (user.id === dareme.owner._id || user.role === "ADMIN")) setTopFan(false)
+    else setTopFan(true)
+  }
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
     dispatch(daremeAction.getDaremeResult(daremeId))
   }, [location, dispatch, daremeId])
 
   useEffect(() => {
-    if (dareme.title) {
-      let total = 0;
-      dareme.options.forEach((option: any) => { total += option.option.donuts; });
-      setTotalDonuts(total);
-      setResultOptions(dareme.options.sort((first: any, second: any) => {
-        return first.option.donuts > second.option.donuts ? -1 : first.option.donuts < second.option.donuts ? 1 :
-          first.option.date < second.option.date ? 1 : first.option.date > second.option.date ? -1 : 0
-      }))
+    if (dareme.owner) {
+      showCard()
+      // let total = 0;
+      // dareme.options.forEach((option: any) => { total += option.option.donuts; });
+      // setTotalDonuts(total);
+      // setResultOptions(dareme.options.sort((first: any, second: any) => {
+      //   return first.option.donuts > second.option.donuts ? -1 : first.option.donuts < second.option.donuts ? 1 :
+      //     first.option.date < second.option.date ? 1 : first.option.date > second.option.date ? -1 : 0
+      // }))
     }
   }, [dareme])
 
@@ -111,7 +119,7 @@ const DaremeResult = () => {
           {(dareme.owner && user && (dareme.owner._id === user.id || user.role === "ADMIN")) && <NoOfPeopleIcon color="#938D8A" />}
         </div>
       </div>
-      {(maxOption && dareme.owner) &&
+      {(dareme.owner) &&
         <div className="dareme-result">
           <RefundDlg
             confirm={true}
@@ -284,7 +292,9 @@ const DaremeResult = () => {
             shareType={"win"}
             daremeTitle={dareme.title}
           />
-          <div className="dareme-result-header">
+          <div className="dareme-result-header"
+            style={{ maxWidth: ((pyramid === true && topFan === true) || topFan === false) ? '1100px' : '720px' }}
+          >
             <div className="left-time-vote-info">
               <div className="left-time">
                 <span>{displayTime(dareme.time)}</span>
@@ -301,28 +311,37 @@ const DaremeResult = () => {
             </div>
           </div>
           <div className="dareme-result-detail">
+            {pyramid === true &&
+              <div className="detail-card">
+                <PyramidCard
+                  percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100}
+                  itemType="dareme"
+                  owner={{
+                    avatar: dareme.owner.avatar,
+                    name: dareme.owner.name
+                  }}
+                />
+              </div>
+            }
+
             <div className="detail-card">
               <VoteResult options={dareme.options} />
             </div>
-            <div className="detail-card">
-              <ListSuperFans voters={dareme.voteInfo.filter((vote: any) => vote.superfan === true).sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
-            </div>
-            <div className="detail-card">
-              <TopFan topfans={dareme.voteInfo.sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
-            </div>
-            <div className="detail-card">
-              <PyramidCard
-                percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100}
-                itemType="dareme"
-                owner={{
-                  avatar: dareme.owner.avatar,
-                  name: dareme.owner.name
-                }}
-              />
-            </div>
-            <div className="detail-card">
-              <SuperfanPercentage percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100} />
-            </div>
+            {topFan === false &&
+              <div className="detail-card">
+                <ListSuperFans voters={dareme.voteInfo.filter((vote: any) => vote.superfan === true).sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
+              </div>
+            }
+            {topFan === true &&
+              <div className="detail-card">
+                <TopFan topfans={dareme.voteInfo.sort((first: any, second: any) => first.donuts < second.donuts ? 1 : first.donuts > second.donuts ? -1 : 0)} />
+              </div>
+            }
+            {topFan === false &&
+              <div className="detail-card">
+                <SuperfanPercentage percentage={dareme.voteInfo.filter((vote: any) => vote.superfan).length / dareme.voteInfo.length * 100} />
+              </div>
+            }
           </div>
           {/* <div className="dareme-result-videoCardDesktop">
             <VideoCardDesktop
