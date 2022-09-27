@@ -117,7 +117,6 @@ export const fundmeAction = {
   },
 
   publishFundme: () => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_FUNDME_DETAIL_INITIAL })
     api.publishFundme()
       .then((result) => {
         const { data } = result

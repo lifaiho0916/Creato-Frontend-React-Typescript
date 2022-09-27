@@ -12,7 +12,7 @@ import CategoryBtn from "../../../components/general/categoryBtn";
 import Gif from "../../../components/general/gif";
 import { LanguageContext } from "../../../routes/authRoute";
 import { CreatoCoinIcon, HotIcon, RewardIcon } from '../../../assets/svg';
-import { SET_TEASER_FILE1, SET_COVER_FILE1, SET_DIALOG_STATE } from "../../../redux/types";
+import { SET_TEASER_FILE1, SET_COVER_FILE1, SET_DIALOG_STATE, SET_FUNDME_DETAIL_INITIAL } from "../../../redux/types";
 import CreateFundMeGif from '../../../assets/img/create_fundme.gif';
 import "../../../assets/styles/fundme/create/previewStyle.scss";
 
@@ -90,10 +90,12 @@ const FundmePreview = () => {
         title="Congratulations!"
         exit={() => {
           setOpenCopyLink(false);
+          dispatch({ type: SET_FUNDME_DETAIL_INITIAL })
           navigate(`/${user.personalisedUrl}`);
         }}
         wrapExit={() => {
           setOpenCopyLink(false);
+          dispatch({ type: SET_FUNDME_DETAIL_INITIAL})
           navigate(`/${user.personalisedUrl}`);
         }}
         context={"Game on!\nSpread the words now."}

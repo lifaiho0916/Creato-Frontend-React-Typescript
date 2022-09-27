@@ -103,7 +103,12 @@ const DareMeDetails = (props: any) => {
       <div className="header-part">
         <div onClick={() => { navigate(prevRoute) }}><BackIcon color="black" /></div>
         <div className="page-title"><span>{contexts.HEADER_TITLE.DAREME_DETAILS}</span></div>
-        <div><ShareIcon color="black" /></div>
+        <div style={{ display: 'flex' }}>
+          {(dareme.owner && user && (dareme.owner._id == user.id || user.role === "ADMIN")) &&
+            <div onClick={() => { navigate(`/dareme/${daremeId}/voters`) }}><NoOfPeopleIcon color="#938D8A" />&nbsp;&nbsp;</div>
+          }
+          <div><ShareIcon color="black" /></div>
+        </div>
       </div>
       {dareme.owner &&
         <div>

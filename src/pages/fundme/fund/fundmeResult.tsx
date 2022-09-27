@@ -199,7 +199,7 @@ const FundmeResult = () => {
                 </div>
               }
             </div>
-            {(fundme.owner._id === user.id) &&
+            {(user && fundme.owner._id === user.id) &&
               <>
                 {fundme.fanwall === null ?
                   <div className="post-fanwall-btn" onClick={() => { dispatch(fundmeAction.postFanwall(fundme._id, navigate)) }}>

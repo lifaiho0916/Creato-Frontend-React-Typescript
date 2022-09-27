@@ -17,17 +17,17 @@ import { AddIcon, EditIcon, PlayIcon, RewardIcon } from "../../../assets/svg";
 import "../../../assets/styles/dareme/create/createDaremeStyle.scss";
 
 const useWindowSize = () => {
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(0)
   useLayoutEffect(() => {
     function updateSize() {
-      setSize(window.innerWidth);
+      setSize(window.innerWidth)
     }
-    window.addEventListener("resize", updateSize);
+    window.addEventListener("resize", updateSize)
     updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-  return size;
-};
+    return () => window.removeEventListener("resize", updateSize)
+  }, [])
+  return size
+}
 
 const CreateDareme = () => {
   const contexts = useContext(LanguageContext);

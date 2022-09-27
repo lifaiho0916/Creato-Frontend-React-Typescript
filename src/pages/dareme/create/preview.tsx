@@ -13,7 +13,7 @@ import CategoryBtn from "../../../components/general/categoryBtn";
 import Gif from "../../../components/general/gif";
 import { LanguageContext } from "../../../routes/authRoute";
 import { CreatoCoinIcon, RewardIcon } from '../../../assets/svg';
-import { SET_TEASER_FILE, SET_COVER_FILE, SET_DIALOG_STATE } from "../../../redux/types";
+import { SET_TEASER_FILE, SET_COVER_FILE, SET_DIALOG_STATE, SET_DAREME_DETAIL_INITIAL } from "../../../redux/types";
 import CreateDaremeGif from '../../../assets/img/create_dareme.gif';
 import "../../../assets/styles/dareme/create/previewStyle.scss";
 
@@ -111,10 +111,12 @@ const Preview = () => {
         title="Congratulations!"
         exit={() => {
           setOpenCopyLink(false);
+          dispatch({ type: SET_DAREME_DETAIL_INITIAL })
           navigate(`/${user.personalisedUrl}`);
         }}
         wrapExit={() => {
           setOpenCopyLink(false);
+          dispatch({ type: SET_DAREME_DETAIL_INITIAL })
           navigate(`/${user.personalisedUrl}`);
         }}
         context={"Game on!\nSpread the words now."}

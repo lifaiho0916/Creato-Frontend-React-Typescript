@@ -358,7 +358,14 @@ const DaremeResult = () => {
               </div>
             }
             <div className="detail-card">
-              <VoteResult options={dareme.options} />
+              <VoteResult options={dareme.options.sort((first: any, second: any) => {
+                if(first.option.donuts < second.option.donuts) return 1
+                else if(first.option.donuts > second.option.donuts) return -1
+                else {
+                  if(first.option.voters < second.option.voters) return 1
+                  else return -1
+                }
+              })} />
             </div>
             {topFan === false &&
               <div className="detail-card">
@@ -376,7 +383,7 @@ const DaremeResult = () => {
               </div>
             }
           </div>
-          {(dareme.owner._id === user.id) &&
+          {(user && dareme.owner._id === user.id) &&
             <>
               {dareme.fanwall === null ?
                 <div className="post-fanwall-btn" onClick={() => { dispatch(daremeAction.postFanwall(dareme._id, navigate)) }}>
