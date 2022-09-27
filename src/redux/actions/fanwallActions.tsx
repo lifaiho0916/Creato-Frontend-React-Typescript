@@ -12,8 +12,6 @@ import {
   SET_DAREME,
   SET_TIPS,
   SET_USERS,
-  SET_VOTER_COUNT,
-  SET_PROFILE_EARNING
 } from "../types";
 import * as api from "../../api";
 
@@ -100,14 +98,13 @@ export const fanwallAction = {
     dispatch({ type: SET_TIPS, payload: [] })
     api.getFanwallsByPersonalisedUrl({ url: data })
       .then((result: any) => {
-        const { data } = result;
+        const { data } = result
         if (data.success) {
+          const payload = data.payload
           dispatch({ type: SET_LOADING_FALSE })
-          dispatch({ type: SET_FANWALLS, payload: data.fanwalls })
-          dispatch({ type: SET_TIPS, payload: data.tips })
-          dispatch({ type: SET_USERS, payload: [data.user] })
-          dispatch({ type: SET_VOTER_COUNT, payload: data.voterCount })
-          dispatch({ type: SET_PROFILE_EARNING, payload: data.earnings })
+          dispatch({ type: SET_FANWALLS, payload: payload.fanwalls })
+          dispatch({ type: SET_TIPS, payload: payload.tips })
+          dispatch({ type: SET_USERS, payload: [payload.user] })
         }
       }).catch((err: any) => console.log(err));
   },

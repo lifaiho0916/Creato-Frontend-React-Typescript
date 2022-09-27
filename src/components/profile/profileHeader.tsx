@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { LanguageContext } from "../../routes/authRoute";
-import Button from "../general/button";
-import Avatar from "../general/avatar";
+import { useEffect, useState, useContext, useRef } from "react"
+import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { LanguageContext } from "../../routes/authRoute"
+import Button from "../general/button"
+import Avatar from "../general/avatar"
 import {
   AddIcon,
   EditIcon,
@@ -17,15 +17,14 @@ import {
   YoutubeIcon,
   TipIcon,
   CreatoCoinIcon,
-  InviteIcon
-} from "../../assets/svg";
-import CONSTANT from "../../constants/constant";
-import { SET_PROFILE_DATA } from "../../redux/types";
+  InviteIcon,
+  WinningIcon
+} from "../../assets/svg"
+import { SET_PROFILE_DATA } from "../../redux/types"
 import { subscribeUser } from '../../api'
-import Dialog from "../general/dialog";
-import { SET_PREVIOUS_ROUTE } from "../../redux/types";
-// import { notificationAction } from "../../redux/actions/notificationAction";
-import "../../assets/styles/profile/components/profileHeaderStyle.scss";
+import Dialog from "../general/dialog"
+import { SET_PREVIOUS_ROUTE } from "../../redux/types"
+import "../../assets/styles/profile/components/profileHeaderStyle.scss"
 
 const useOutsideAlerter = (ref: any, moreInfo: any) => {
   const [more, setMore] = useState(moreInfo);
@@ -51,35 +50,33 @@ interface profileProps {
 }
 
 const ProfileHeader = (props: profileProps) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const userStore = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
-  const authuser = userStore.users[0];
-  const user = userStore.user;
-  const contexts = useContext(LanguageContext);
-  const daremeStore = useSelector((state: any) => state.dareme);
-  const daremes = daremeStore.daremes;
-  const voterCount = daremeStore.voterCount;
-  const earnings = daremeStore.earnings
-  const [categoryText, setCategoryText] = useState("");
-  const [moreInfo, setMoreInfo] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
-  const [isSignIn, setIsSignIn] = useState(false);
-  const wrapRef = useRef<any>(null);
-  const res = useOutsideAlerter(wrapRef, moreInfo);
+  const dispatch = useDispatch()
+  const authuser = userStore.users[0]
+  const { user } = userStore
+  const contexts = useContext(LanguageContext)
+  const daremeStore = useSelector((state: any) => state.dareme)
+  const { daremes } = daremeStore
+  const [categoryText, setCategoryText] = useState("")
+  const [moreInfo, setMoreInfo] = useState(false)
+  const [subscribed, setSubscribed] = useState(false)
+  const [isSignIn, setIsSignIn] = useState(false)
+  const wrapRef = useRef<any>(null)
+  const res = useOutsideAlerter(wrapRef, moreInfo)
 
   useEffect(() => {
     if (authuser && authuser.categories.length) {
-      let categories = authuser.categories;
+      let categories = authuser.categories
       let texts = ""
-      categories.sort((a: any, b: any) => { return a > b ? 1 : a < b ? -1 : 0 });
+      categories.sort((a: any, b: any) => { return a > b ? 1 : a < b ? -1 : 0 })
       categories.forEach((categoryIndex: any, index: any) => {
-        texts += contexts.CREATOR_CATEGORY_LIST[categoryIndex];
-        if (index < categories.length - 1) texts += "/";
-      });
-      setCategoryText(texts);
+        texts += contexts.CREATOR_CATEGORY_LIST[categoryIndex]
+        if (index < categories.length - 1) texts += "/"
+      })
+      setCategoryText(texts)
     }
-  }, [authuser, contexts.CREATOR_CATEGORY_LIST, daremes]);
+  }, [authuser, contexts.CREATOR_CATEGORY_LIST, daremes])
 
   useEffect(() => {
     if (user && authuser) {
@@ -111,8 +108,8 @@ const ProfileHeader = (props: profileProps) => {
   const subscribedUser = async () => {
     try {
       if (user) {
-        const result = await subscribeUser(authuser._id);
-        if (result.data.success) setSubscribed(!subscribed);
+        const result = await subscribeUser(authuser._id)
+        if (result.data.success) setSubscribed(!subscribed)
       } else setIsSignIn(true);
     } catch (err) {
       console.log({ err })
@@ -120,8 +117,8 @@ const ProfileHeader = (props: profileProps) => {
   }
 
   const tipping = () => {
-    if (user) navigate(`/${authuser.personalisedUrl}/tip`);
-    else navigate('/tipmethod');
+    if (user) navigate(`/${authuser.personalisedUrl}/tip`)
+    else navigate('/tipmethod')
   }
 
   useEffect(() => {
@@ -131,7 +128,7 @@ const ProfileHeader = (props: profileProps) => {
   return (
     <div
       className="profile-header"
-      style={{ height: `${props.size === "mobile" ? voterCount > 0 ? "170px" : "150px" : "200px"}` }}
+      style={{ height: `${props.size === "mobile" ? "190px" : "200px"}` }}
     >
       <Dialog
         display={isSignIn}
@@ -144,7 +141,7 @@ const ProfileHeader = (props: profileProps) => {
             text: "Sign in",
             handleClick: () => {
               dispatch({ type: SET_PREVIOUS_ROUTE, payload: `/${authuser.personalisedUrl}` });
-              navigate('/auth/signin');
+              navigate('/auth/signin')
             }
           }
         ]}
@@ -158,44 +155,63 @@ const ProfileHeader = (props: profileProps) => {
         <div className="name-category">
           <span className="name">{authuser ? authuser.name : ''}</span>
           <span className="category">{categoryText}</span>
-          <span className="social-icons">
-            {/* <div className="youtube-icon">
-              <YoutubeIcon color="#E17253" />
-            </div>
-            <div className="instagram-icon">
-              <InstagramIcon color="#E17253" />
-            </div> */}
-            {/* {props.property === "view" && (
-            <div className="facebook-icon">
-              <FacebookIcon color="#E17253" />
-            </div>
-            )} */}
-            {/* {props.property === "view" && (
-              <div className="twitter-icon">
-                <TwitterIcon color="#E17253" />
-              </div>
-            )} */}
-          </span>
         </div>
       </div>
       <div className="ellipsis-icon" onClick={() => { setMoreInfo(true); }}>
         <MoreIcon color="black" />
       </div>
-      {(voterCount > 0 || earnings > 0) ?
-        <div className="rating-container">
-          <span className="Voting-value"><b>{roundNumber(voterCount)} </b></span>
-          <HotIcon className="rating-icons" color="#EFA058" width="18" />
-          <span><b>SuperFans</b></span>
-          <span className="Voting-value"> <b>&nbsp; {roundNumber(Number((earnings).toFixed(1)))}</b></span>
-          <CreatoCoinIcon className="rating-icons" color="#EFA058" width="18" />
-        </div> :
-        <></>
+      {authuser &&
+        <div className="rating-container" style={{ left: props.size === "mobile" ? '35px' : '150px' }}>
+          <div className="rating-item">
+            <div className="count-letter"><span>{roundNumber(authuser.itemCnt ? authuser.itemCnt : 0)}</span></div>
+            <div className="type-letter"><CreatoCoinIcon color="#EFA058" width={18} /><span>DareMe/FundMe</span></div>
+          </div>
+          <div className="rating-item">
+            <div className="count-letter"><span>{roundNumber(authuser.superfans ? authuser.superfans : 0)}</span></div>
+            <div className="type-letter"><WinningIcon color="#EFA058" width={16} /><span>SuperFans</span></div>
+          </div>
+          <div className="rating-item">
+            <div className="count-letter"><span>{roundNumber(authuser.fanwallCnt ? authuser.fanwallCnt : 0)}</span></div>
+            <div className="type-letter"><HotIcon color="#EFA058" width={15} /><span>FanWall Post</span></div>
+          </div>
+        </div>
       }
       <div className="icons">
         {props.property === "view" ? (
-          <div className="bell-icon" onClick={subscribedUser}>
-            {subscribed ? <NotificationSubscribedIcon color="#EFA058" /> : <NotificationOutlineIcon color="#EFA058" />}
-          </div>
+          <>
+            <div style={{ marginRight: '10px' }}>
+              {(authuser && authuser.tipFunction) &&
+                <Button
+                  handleSubmit={tipping}
+                  color="primary"
+                  shape="pill"
+                  fillStyle="fill"
+                  icon={[<TipIcon color="white" />, <TipIcon color="white" />, <TipIcon color="white" />]}
+                />
+              }
+            </div>
+            <div style={{ marginRight: '10px' }}>
+              {subscribed ?
+                <Button
+                  handleSubmit={subscribedUser}
+                  color="primary"
+                  shape="pill"
+                  fillStyle="fill"
+                  icon={[<NotificationSubscribedIcon color="white" />, <NotificationSubscribedIcon color="white" />, <NotificationSubscribedIcon color="white" />]}
+                />
+                :
+                <Button
+                  handleSubmit={subscribedUser}
+                  color="primary"
+                  shape="pill"
+                  fillStyle="fill"
+                  icon={[<NotificationOutlineIcon color="white" />, <NotificationOutlineIcon color="white" />, <NotificationOutlineIcon color="white" />]}
+                />
+              }
+            </div>
+            {/* <div style={{ marginLeft: '15px' }}><YoutubeIcon color="#E17253" /></div>
+            <div style={{ marginLeft: '5px' }}><InstagramIcon color="#E17253" /></div> */}
+          </>
         ) : (
           <>
             <div className="pen-icon" onClick={() => {
@@ -207,15 +223,17 @@ const ProfileHeader = (props: profileProps) => {
                     displayName: user.name,
                     creatoUrl: `www.creatogether.io/${user.personalisedUrl}`
                   }
-                });
-                navigate(`/myaccount/edit`);
+                })
+                navigate(`/myaccount/edit`)
               }
             }}>
               <EditIcon color="white" /><span>&nbsp;Edit</span>
             </div>
             <div className="pen-icon" onClick={() => { if (user) navigate(`/myaccount/setting/invitefriends`) }}>
-              <InviteIcon color="white" width={25} height={15}/><span>&nbsp;Invite</span>
+              <InviteIcon color="white" width={25} height={15} /><span>&nbsp;Invite</span>
             </div>
+            {/* <div style={{ marginLeft: '15px' }}><YoutubeIcon color="#E17253" /></div>
+            <div style={{ marginLeft: '5px' }}><InstagramIcon color="#E17253" /></div> */}
           </>
         )}
       </div>
@@ -227,19 +245,7 @@ const ProfileHeader = (props: profileProps) => {
             shape="pill"
             fillStyle="fill"
             icon={[<AddIcon color="white" />, <AddIcon color="white" />, <AddIcon color="white" />]}
-          />
-          :
-          <>
-            {(authuser && authuser.tipFunction) &&
-              <Button
-                handleSubmit={tipping}
-                color="primary"
-                shape="pill"
-                fillStyle="fill"
-                icon={[<TipIcon color="white" />, <TipIcon color="white" />, <TipIcon color="white" />]}
-              />
-            }
-          </>
+          /> : <></>
         }
       </div>
       <div className="drop-down-list" style={moreInfo === true ? { visibility: 'visible', opacity: 1 } : {}} ref={wrapRef}>
@@ -250,7 +256,7 @@ const ProfileHeader = (props: profileProps) => {
         <div className="list" onClick={() => { setMoreInfo(false) }}>{contexts.PROFILE_LETTER.CANCEL}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProfileHeader;
+export default ProfileHeader

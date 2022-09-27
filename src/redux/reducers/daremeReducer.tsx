@@ -22,8 +22,6 @@ const INITIAL_STATE: any = {
   title: null,
   options: [],
   daremes: [],
-  voterCount: 0,
-  earnings: 0,
   refundDonuts: null,
 }
 
@@ -56,8 +54,6 @@ const daremeReducer = (state: any = INITIAL_STATE, action: any) => {
         title: null,
         options: [],
         daremes: [],
-        voterCount: 0,
-        earnings: 0,
         refundDonuts: null,
       };
     case actionTypes.SET_DAREME_DETAIL_INITIAL:
@@ -99,17 +95,9 @@ const daremeReducer = (state: any = INITIAL_STATE, action: any) => {
     case actionTypes.SET_ADMIN_TEASER_SIZE_TYPE:
       state.teaserSizeType = payload;
       return { ...state };
-    case actionTypes.SET_VOTER_COUNT:
-      state.voterCount = payload;
-      return { ...state };
     case actionTypes.SET_REFUND_DONUTS:
       state.refundDonuts = payload;
       return { ...state }
-    case actionTypes.SET_PROFILE_EARNING:
-      return {
-        ...state,
-        earnings: payload
-      }
     default:
       return state;
   }

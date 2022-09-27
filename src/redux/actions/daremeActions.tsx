@@ -11,10 +11,8 @@ import {
   SET_USER,
   SET_FANWALLS,
   SET_DAREME_DETAIL_INITIAL,
-  SET_VOTER_COUNT,
   SET_DIALOG_STATE,
   SET_REFUND_DONUTS,
-  SET_PROFILE_EARNING,
   SET_FUNDMES
 } from "../types";
 import * as api from "../../api";
@@ -154,8 +152,6 @@ export const daremeAction = {
           dispatch({ type: SET_DAREMES, payload: payload.daremes })
           dispatch({ type: SET_FUNDMES, payload: payload.fundmes })
           dispatch({ type: SET_USERS, payload: [payload.user] })
-          dispatch({ type: SET_VOTER_COUNT, payload: payload.voterCount })
-          dispatch({ type: SET_PROFILE_EARNING, payload: payload.earnings })
           dispatch({ type: SET_LOADING_FALSE })
         }
       }).catch((err) => console.log(err))

@@ -1076,9 +1076,9 @@ export const RetrieveIcon = (props: any) => (
 );
 export const NotificationfillIcon = (props: any) => (
   <svg
-    width={props.width === undefined ? "27 " : props.width}
+    width={props.width === undefined ? "20" : props.width}
     height={props.height === undefined ? "20" : props.height}
-    viewBox="0 0 20 20"
+    viewBox="0 0 16 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     style={{ cursor: "pointer" }}
