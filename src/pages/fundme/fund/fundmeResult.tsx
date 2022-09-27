@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { fundmeAction } from "../../../redux/actions/fundmeActions"
 import ContainerBtn from "../../../components/general/containerBtn"
-import CategoryBtn from "../../../components/general/categoryBtn"
 import PyramidCard from "../../../components/general/PyramidCard"
 import Missed from "../../../components/general/Missed"
 import SuperfanPercentage from "../../../components/general/SuperfanPercentage"
@@ -15,6 +14,7 @@ import { LanguageContext } from "../../../routes/authRoute"
 import { CreatoCoinIcon, RewardIcon, SpreadIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
 import { SET_FUNDME_DETAIL_INITIAL } from "../../../redux/types"
 import "../../../assets/styles/fundme/fund/fundmeResultStyle.scss"
+import { daremeAction } from "../../../redux/actions/daremeActions"
 
 const FundmeResult = () => {
   const location = useLocation();
@@ -199,6 +199,19 @@ const FundmeResult = () => {
                 </div>
               }
             </div>
+            {(fundme.owner._id === user.id) &&
+              <>
+                {fundme.fanwall === null ?
+                  <div className="post-fanwall-btn" onClick={() => { dispatch(fundmeAction.postFanwall(fundme._id, navigate)) }}>
+                    <ContainerBtn text={contexts.DAREME_FINISHED.POST_ON_FANWALL} styleType="fill" />
+                  </div>
+                  :
+                  <div className="post-fanwall-btn">
+                    <ContainerBtn text={"Edit Post"} styleType="fill" />
+                  </div>
+                }
+              </>
+            }
             {/* 
               <div className="funding-goal">
                 <div className="title">

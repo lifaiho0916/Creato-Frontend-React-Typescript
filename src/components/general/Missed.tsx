@@ -40,7 +40,10 @@ const Missed = (props: any) => {
             color="primary"
             width={180}
             shape="rounded"
-            handleSubmit={() => { navigate(`/dareme/details/${item.id}`) }}
+            handleSubmit={() => { 
+              if(item.type === "dareme") navigate(`/dareme/details/${item.id}`) 
+              else navigate(`/fundme/details/${item.id}`) 
+            }}
           />
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { daremeAction } from "../../../redux/actions/daremeActions"
 import ContainerBtn from "../../../components/general/containerBtn"
-import CategoryBtn from "../../../components/general/categoryBtn"
 import Dialog from "../../../components/general/dialog"
 import VoteResult from "../../../components/general/VoteResult"
 import TopFan from "../../../components/general/TopFan"
@@ -31,7 +30,6 @@ const DaremeResult = () => {
   const { dareme, refundDonuts } = daremeState
   const { fanwall } = fanwallState
   const { user } = userState
-  const [totalDonuts, setTotalDonuts] = useState(0)
   const [resultOptions, setResultOptions] = useState<Array<any>>([])
   const [maxOption, setMaxOption] = useState<any>(null)
   const [isWin, setIsWin] = useState(false)
@@ -378,6 +376,19 @@ const DaremeResult = () => {
               </div>
             }
           </div>
+          {(dareme.owner._id === user.id) &&
+            <>
+              {dareme.fanwall === null ?
+                <div className="post-fanwall-btn" onClick={() => { dispatch(daremeAction.postFanwall(dareme._id, navigate)) }}>
+                  <ContainerBtn text={contexts.DAREME_FINISHED.POST_ON_FANWALL} styleType="fill" />
+                </div>
+                :
+                <div className="post-fanwall-btn">
+                  <ContainerBtn text={"Edit Post"} styleType="fill" />
+                </div>
+              }
+            </>
+          }
           {/*
             <div className="result-info">
               <div className="result-win-options">

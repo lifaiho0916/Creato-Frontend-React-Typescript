@@ -9,7 +9,6 @@ import Dialog from "../../../components/general/dialog"
 import { LanguageContext } from "../../../routes/authRoute"
 import Gif from "../../../components/general/gif"
 import { SET_DIALOG_STATE, SET_PREVIOUS_ROUTE } from "../../../redux/types"
-import CONSTANT from "../../../constants/constant"
 import VoteNonSuperfanGif from '../../../assets/img/vote_non_superfan.gif'
 import VoteSuperfanGif from '../../../assets/img/vote_superfan.gif'
 import { CreatoCoinIcon, BackIcon } from "../../../assets/svg"
@@ -62,11 +61,15 @@ const DonutWish = () => {
 
   useEffect(() => {
     if (dlgState.type === 'vote_non_superfan' && dlgState.state === true) {
-      setIsCopyLink(true)
-      setVoteNonSuperfanGif(true)
+      // setIsCopyLink(true)
+      // setVoteNonSuperfanGif(true)
+      dispatch({ type: SET_DIALOG_STATE, payload: { type: '', state: false } })
+      navigate(`/fundme/result/${fundmeId}?superfan=false`)
     } else if (dlgState.type === 'vote_superfan' && dlgState.state === true) {
-      setIsCopyLink(true)
-      setVoteSuperfanGif(true)
+      // setIsCopyLink(true)
+      // setVoteSuperfanGif(true)
+      dispatch({ type: SET_DIALOG_STATE, payload: { type: '', state: false } })
+      navigate(`/fundme/result/${fundmeId}?superfan=true`)
     }
   }, [dlgState])
 
