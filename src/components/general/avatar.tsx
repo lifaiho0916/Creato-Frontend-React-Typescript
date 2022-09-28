@@ -1,6 +1,6 @@
-import visitorImg from "../../assets/img/visitor_avatar.png"
 import React from "react"
 import { useState } from "react"
+import visitorImg from "../../assets/img/visitor_avatar.png"
 
 const Avatar = (props: any) => {
   const { size, avatarStyle, category, username, avatar, handleClick, hover } = props;
@@ -24,7 +24,7 @@ const Avatar = (props: any) => {
   const imgStyle = {
     width: imgSize,
     height: imgSize,
-    borderRadius: imgSize,
+    borderRadius: "50%",
     border: status === "hover" ? "2px solid #EFA058" : "2px solid rgba(0,0,0,0)",
     position: "relative" as const,
     cursor: "pointer",

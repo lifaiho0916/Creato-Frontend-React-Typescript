@@ -160,7 +160,7 @@ const FundmeResult = () => {
               {pyramid === true &&
                 <div className="fundme-card">
                   <PyramidCard
-                    percentage={fundme.voteInfo.filter((vote: any) => vote.superfan === true).length / fundme.voteInfo.length * 100}
+                    percentage={Math.round(fundme.voteInfo.filter((vote: any) => vote.superfan === true).length / fundme.voteInfo.length * 100)}
                     itemType="fundme"
                     owner={{
                       avatar: fundme.owner.avatar,

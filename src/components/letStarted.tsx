@@ -1,35 +1,62 @@
-import { useState } from "react"
+import { useState, useLayoutEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from "./general/button"
-import { TipIcon, Dare2Icon, ProfileIcon, AddIcon } from "../assets/svg"
+import { TipIcon, Dare2Icon, ProfileIcon, AddIcon, RetrieveIcon, ExpandIcon } from "../assets/svg"
 import CreatePart from "../assets/img/create_part.png"
 import TippingPart from "../assets/img/tipping_part.png"
 import FanwallPart from "../assets/img/fanwall_part.png"
 import "../assets/styles/letStartedStyle.scss"
 
+const useWindowSize = () => {
+  const [size, setSize] = useState(0)
+  useLayoutEffect(() => {
+    const updateSize = () => { setSize(window.innerWidth) }
+    window.addEventListener("resize", updateSize)
+    updateSize()
+    return () => window.removeEventListener("resize", updateSize)
+  }, [])
+  return size
+}
+
 const LetStarted = (props: any) => {
   const navigate = useNavigate()
-  const { type, setType, user } = props
+  const width = useWindowSize()
+  const { user, types, setTypes } = props
   const [hover1, setHover1] = useState(false)
   const [hover2, setHover2] = useState(false)
   const [hover3, setHover3] = useState(false)
 
   return (
     <div className="let-start-wrapper">
-      <div className={type === 0 ? "open-status" : "close-status"}
-        onClick={() => { setType(0) }}
+      <div className={types[0] === true ? "open-status" : "close-status"}
+        onClick={() => {
+          const typesTemp = [...types]
+          if (typesTemp[0] === false) {
+            typesTemp[0] = true
+            if (width > 700) {
+              typesTemp[1] = false
+              typesTemp[2] = false
+            }
+            setTypes(typesTemp)
+          }
+        }}
         onMouseOver={() => { setHover1(true) }}
         onMouseOut={() => { setHover1(false) }}
       >
         <div className="title-part">
           <div className="icon">
-            <Dare2Icon color={(type === 0 || hover1 === true) ? "#EFA058" : "#938D8A"} width={30} height={30} />
+            <Dare2Icon color={(types[0] === true || hover1 === true) ? "#EFA058" : "#938D8A"} width={30} height={30} />
           </div>
           <div className="letter">
             <span>DareMe/FundMe</span>
           </div>
+          {(width < 700 && types[0] === false) &&
+            <div>
+              <ExpandIcon color={hover1 ? "#EFA058" : "#938D8A"} width={35} height={35} />
+            </div>
+          }
         </div>
-        {type === 0 &&
+        {types[0] === true &&
           <div className="action-part">
             <div>
               <Dare2Icon color="#EFA058" width={200} height={200} />
@@ -53,12 +80,12 @@ const LetStarted = (props: any) => {
             </div>
           </div>
         }
-        {type === 0 &&
+        {types[0] === true &&
           <div className="image">
             <div className="image-letter">
               <span>Where the journey start</span>
             </div>
-            <img src={CreatePart} alt="Create" width="100%" style={{ margin: '10px 0px' }}/>
+            <img src={CreatePart} alt="Create" width="100%" style={{ margin: '20px 0px' }} />
             <div className="image-button">
               <Button
                 width={250}
@@ -70,23 +97,50 @@ const LetStarted = (props: any) => {
                 handleSubmit={() => { navigate('/create') }}
               />
             </div>
+            {width < 700 &&
+              <div style={{ margin: '15px 0px 0px 0px', display: 'flex', justifyContent: 'center' }}
+                onClick={(e) => {
+                  const typesTemp = [...types]
+                  typesTemp[0] = false
+                  setHover1(false)
+                  setTypes(typesTemp)
+                }}
+              >
+                <RetrieveIcon color="#EFA058" width={35} height={35} />
+              </div>
+            }
           </div>
         }
       </div>
-      <div className={type === 1 ? "open-status" : "close-status"}
-        onClick={() => { setType(1) }}
+      <div className={types[1] === true ? "open-status" : "close-status"}
+        onClick={() => {
+          const typesTemp = [...types]
+          if (typesTemp[1] === false) {
+            typesTemp[1] = true
+            if (width > 700) {
+              typesTemp[0] = false
+              typesTemp[2] = false
+            }
+            setTypes(typesTemp)
+          }
+        }}
         onMouseOver={() => { setHover2(true) }}
         onMouseOut={() => { setHover2(false) }}
       >
         <div className="title-part">
           <div className="icon">
-            <TipIcon color={(type === 1 || hover2 === true) ? "#EFA058" : "#938D8A"} width={30} height={30} />
+            <TipIcon color={(types[1] === true || hover2 === true) ? "#EFA058" : "#938D8A"} width={30} height={30} />
           </div>
           <div className="letter">
             <span>Tipping</span>
           </div>
+          {(width < 700 && types[1] === false) &&
+            <div>
+              <ExpandIcon color={hover2 ? "#EFA058" : "#938D8A"} width={35} height={35} />
+            </div>
+          }
         </div>
-        {type === 1 &&
+        {types[1] === true &&
           <div className="action-part">
             <div>
               <TipIcon color="#EFA058" width={200} height={200} />
@@ -110,7 +164,7 @@ const LetStarted = (props: any) => {
             </div>
           </div>
         }
-        {type === 1 &&
+        {types[1] === true &&
           <div className="image">
             <div className="image-letter">
               <span>Send support to creators</span>
@@ -127,23 +181,50 @@ const LetStarted = (props: any) => {
                 handleSubmit={() => { navigate('/creators') }}
               />
             </div>
+            {width < 700 &&
+              <div style={{ margin: '15px 0px 0px 0px', display: 'flex', justifyContent: 'center' }}
+                onClick={() => {
+                  const typesTemp = [...types]
+                  typesTemp[1] = false
+                  setHover2(false)
+                  setTypes(typesTemp)
+                }}
+              >
+                <RetrieveIcon color="#EFA058" width={35} height={35} />
+              </div>
+            }
           </div>
         }
       </div>
-      <div className={type === 2 ? "open-status" : "close-status"}
-        onClick={() => { setType(2) }}
+      <div className={types[2] === true ? "open-status" : "close-status"}
+        onClick={() => {
+          const typesTemp = [...types]
+          if (types[2] === false) {
+            typesTemp[2] = true
+            if (width > 700) {
+              typesTemp[0] = false
+              typesTemp[1] = false
+            }
+            setTypes(typesTemp)
+          }
+        }}
         onMouseOver={() => { setHover3(true) }}
         onMouseOut={() => { setHover3(false) }}
       >
         <div className="title-part">
           <div className="icon">
-            <ProfileIcon color={(type === 2 || hover3 === true) ? "#EFA058" : "#938D8A"} width={32} height={32} />
+            <ProfileIcon color={(types[2] === true || hover3 === true) ? "#EFA058" : "#938D8A"} width={32} height={32} />
           </div>
           <div className="letter">
             <span>FanWall</span>
           </div>
+          {(width < 700 && types[2] === false) &&
+            <div>
+              <ExpandIcon color={hover3 ? "#EFA058" : "#938D8A"} width={35} height={35} />
+            </div>
+          }
         </div>
-        {type === 2 &&
+        {types[2] === true &&
           <div className="action-part">
             <div>
               <ProfileIcon color="#EFA058" width={200} height={200} />
@@ -181,12 +262,12 @@ const LetStarted = (props: any) => {
             </div>
           </div>
         }
-        {type === 2 &&
+        {types[2] === true &&
           <div className="image">
             <div className="image-letter">
               <span>Organized your activities</span>
             </div>
-            <img src={FanwallPart} alt="Create" width="100%" style={{ margin: '10px 0px' }} />
+            <img src={FanwallPart} alt="Create" width="95%" style={{ margin: '10px 0px' }} />
             <div className="image-button">
               <div>
                 <Button
@@ -211,11 +292,23 @@ const LetStarted = (props: any) => {
                   }}
                 />
               </div>
+              {width < 700 &&
+                <div style={{ margin: '15px 0px 0px 0px', display: 'flex', justifyContent: 'center' }}
+                  onClick={() => {
+                    const typesTemp = [...types]
+                    typesTemp[2] = false
+                    setHover3(false)
+                    setTypes(typesTemp)
+                  }}
+                >
+                  <RetrieveIcon color="#EFA058" width={35} height={35} />
+                </div>
+              }
             </div>
           </div>
         }
       </div>
-    </div>
+    </div >
   )
 }
 

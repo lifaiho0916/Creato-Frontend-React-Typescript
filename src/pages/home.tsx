@@ -87,12 +87,10 @@ const Home = () => {
   const [openPayVia, setOpenPayVia] = useState(false)
   const [fanwallId, setFanwallId] = useState("")
   const [errorText, setErrorText] = useState("")
-  const [type, setType] = useState(0)
-  const user = userState.user
-  const users = userState.users
-  const stripeID = userState.stripeID
-  const cardNum = userState.cardNum
-  const dlgState = loadState.dlgState
+  const [types, setTypes] = useState<Array<any>>([true, false, false])
+
+  const { user, users, stripeID, cardNum } = userState
+  const { dlgState } = loadState
   const [searchParams, setSearchParams] = useSearchParams()
   const code = searchParams.get("invitedBy")
 
@@ -361,7 +359,7 @@ const Home = () => {
       <div className="section">
         <div className="title">Let's get started</div>
         <div>
-          <LetStarted type={type} setType={setType} user={user} />
+          <LetStarted user={user} types={types} setTypes={setTypes} />
         </div>
       </div>
       <div className="section">

@@ -18,15 +18,15 @@ const PyramidCard = (props: any) => {
   const fmPyramids = [FmPyramid1, FmPyramid2, FmPyramid3, FmPyramid4]
   const dmPyramids = [DmPyramid1, DmPyramid2, DmPyramid3, DmPyramid4]
   const pyramids: any = itemType === "dareme" ? dmPyramids : fmPyramids
-  const pyramidNo: any = (percentage >= 1 && percentage <= 29) ? 0 :
+  const pyramidNo: any = (percentage >= 0 && percentage <= 29) ? 0 :
     (percentage >= 30 && percentage <= 49) ? 1 :
       (percentage >= 50 && percentage <= 69) ? 2 :
         (percentage >= 70 && percentage <= 89) ? 2 : 3
-  const percent: any = (percentage >= 1 && percentage <= 29) ? 10 :
+  const percent: any = (percentage >= 0 && percentage <= 29) ? 10 :
     (percentage >= 30 && percentage <= 49) ? 30 :
       (percentage >= 50 && percentage <= 69) ? 50 :
         (percentage >= 70 && percentage <= 89) ? 70 : 90
-  const letterNo: any = (percentage >= 1 && percentage <= 29) ? 0 :
+  const letterNo: any = (percentage >= 0 && percentage <= 29) ? 0 :
     (percentage >= 30 && percentage <= 49) ? 1 :
       (percentage >= 50 && percentage <= 69) ? 2 :
         (percentage >= 70 && percentage <= 89) ? 3 : 4

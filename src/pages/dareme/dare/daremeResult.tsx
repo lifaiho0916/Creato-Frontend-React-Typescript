@@ -55,7 +55,7 @@ const DaremeResult = () => {
 
   const showCard = () => {
     if (user) {
-      const filters = dareme.voteInfo.filter((vote: any) => vote.voter._id === user.id && vote.superfan === true)
+      const filters = dareme.voteInfo.filter((vote: any) => vote.voter._id === user.id && vote.superfan === true && user.role !== "ADMIN")
       if (filters.length > 0) {
         if (code === null) setPyramid(true)
         else {
@@ -337,7 +337,7 @@ const DaremeResult = () => {
             {pyramid === true &&
               <div className="detail-card">
                 <PyramidCard
-                  percentage={dareme.voteInfo.filter((vote: any) => vote.superfan === true).length / dareme.voteInfo.length * 100}
+                  percentage={Math.round(dareme.voteInfo.filter((vote: any) => vote.superfan === true).length / dareme.voteInfo.length * 100)}
                   itemType="dareme"
                   owner={{
                     avatar: dareme.owner.avatar,
@@ -359,10 +359,10 @@ const DaremeResult = () => {
             }
             <div className="detail-card">
               <VoteResult options={dareme.options.sort((first: any, second: any) => {
-                if(first.option.donuts < second.option.donuts) return 1
-                else if(first.option.donuts > second.option.donuts) return -1
+                if (first.option.donuts < second.option.donuts) return 1
+                else if (first.option.donuts > second.option.donuts) return -1
                 else {
-                  if(first.option.voters < second.option.voters) return 1
+                  if (first.option.voters < second.option.voters) return 1
                   else return -1
                 }
               })} />
