@@ -128,7 +128,7 @@ const ProfileHeader = (props: profileProps) => {
   return (
     <div
       className="profile-header"
-      style={{ height: `${props.size === "mobile" ? "190px" : "200px"}` }}
+      style={{ height: `${props.size === "mobile" ? ((authuser?.itemCnt + authuser?.superfans + authuser?.fanwallCnt) === 0) ? "150px" : "190px" : "200px"}` }}
     >
       <Dialog
         display={isSignIn}
@@ -140,7 +140,7 @@ const ProfileHeader = (props: profileProps) => {
           {
             text: "Sign in",
             handleClick: () => {
-              dispatch({ type: SET_PREVIOUS_ROUTE, payload: `/${authuser.personalisedUrl}` });
+              dispatch({ type: SET_PREVIOUS_ROUTE, payload: `/ ${authuser.personalisedUrl}` });
               navigate('/auth/signin')
             }
           }
@@ -156,11 +156,12 @@ const ProfileHeader = (props: profileProps) => {
           <span className="name">{authuser ? authuser.name : ''}</span>
           <span className="category">{categoryText}</span>
         </div>
-      </div>
+      </div >
       <div className="ellipsis-icon" onClick={() => { setMoreInfo(true); }}>
         <MoreIcon color="black" />
       </div>
-      {authuser &&
+      {
+        authuser &&
         <div className="rating-container" style={{ left: props.size === "mobile" ? '35px' : '150px' }}>
           {authuser?.itemCnt > 0 ?
             <div className="rating-item">
@@ -171,13 +172,13 @@ const ProfileHeader = (props: profileProps) => {
           {authuser?.superfans > 0 ?
             <div className="rating-item">
               <div className="count-letter"><span>{roundNumber(authuser.superfans ? authuser.superfans : 0)}</span></div>
-              <div className="type-letter"><WinningIcon color="#EFA058" width={16} /><span>SuperFans</span></div>
+              <div className="type-letter"><WinningIcon color="#EFA058" width={16} /><span>&nbsp;SuperFans</span></div>
             </div> : <div></div>
           }
           {authuser?.fanwallCnt > 0 ?
             <div className="rating-item">
               <div className="count-letter"><span>{roundNumber(authuser.fanwallCnt ? authuser.fanwallCnt : 0)}</span></div>
-              <div className="type-letter"><HotIcon color="#EFA058" width={15} /><span>FanWall Post</span></div>
+              <div className="type-letter"><HotIcon color="#EFA058" width={15} /><span>&nbsp;FanWall Post</span></div>
             </div>
             : <div></div>
           }
@@ -262,7 +263,7 @@ const ProfileHeader = (props: profileProps) => {
         }}>{contexts.PROFILE_LETTER.COPY_PROFILE_LINK}</div>
         <div className="list" onClick={() => { setMoreInfo(false) }}>{contexts.PROFILE_LETTER.CANCEL}</div>
       </div>
-    </div>
+    </div >
   )
 }
 

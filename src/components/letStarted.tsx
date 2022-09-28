@@ -58,7 +58,7 @@ const LetStarted = (props: any) => {
             <div className="image-letter">
               <span>Where the journey start</span>
             </div>
-            <img src={CreatePart} alt="Create" width="100%" />
+            <img src={CreatePart} alt="Create" width="100%" style={{ margin: '10px 0px' }}/>
             <div className="image-button">
               <Button
                 width={250}
@@ -115,7 +115,7 @@ const LetStarted = (props: any) => {
             <div className="image-letter">
               <span>Send support to creators</span>
             </div>
-            <img src={TippingPart} alt="Create" width="100%" />
+            <img src={TippingPart} alt="Create" width="90%" style={{ margin: '10px 0px' }} />
             <div className="image-button">
               <Button
                 width={250}
@@ -186,7 +186,7 @@ const LetStarted = (props: any) => {
             <div className="image-letter">
               <span>Organized your activities</span>
             </div>
-            <img src={FanwallPart} alt="Create" width="100%" />
+            <img src={FanwallPart} alt="Create" width="100%" style={{ margin: '10px 0px' }} />
             <div className="image-button">
               <div>
                 <Button
