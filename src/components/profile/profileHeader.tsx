@@ -162,18 +162,25 @@ const ProfileHeader = (props: profileProps) => {
       </div>
       {authuser &&
         <div className="rating-container" style={{ left: props.size === "mobile" ? '35px' : '150px' }}>
-          <div className="rating-item">
-            <div className="count-letter"><span>{roundNumber(authuser.itemCnt ? authuser.itemCnt : 0)}</span></div>
-            <div className="type-letter"><CreatoCoinIcon color="#EFA058" width={18} /><span>DareMe/FundMe</span></div>
-          </div>
-          <div className="rating-item">
-            <div className="count-letter"><span>{roundNumber(authuser.superfans ? authuser.superfans : 0)}</span></div>
-            <div className="type-letter"><WinningIcon color="#EFA058" width={16} /><span>SuperFans</span></div>
-          </div>
-          <div className="rating-item">
-            <div className="count-letter"><span>{roundNumber(authuser.fanwallCnt ? authuser.fanwallCnt : 0)}</span></div>
-            <div className="type-letter"><HotIcon color="#EFA058" width={15} /><span>FanWall Post</span></div>
-          </div>
+          {authuser?.itemCnt > 0 ?
+            <div className="rating-item">
+              <div className="count-letter"><span>{roundNumber(authuser.itemCnt ? authuser.itemCnt : 0)}</span></div>
+              <div className="type-letter"><CreatoCoinIcon color="#EFA058" width={18} /><span>DareMe/FundMe</span></div>
+            </div> : <div></div>
+          }
+          {authuser?.superfans > 0 ?
+            <div className="rating-item">
+              <div className="count-letter"><span>{roundNumber(authuser.superfans ? authuser.superfans : 0)}</span></div>
+              <div className="type-letter"><WinningIcon color="#EFA058" width={16} /><span>SuperFans</span></div>
+            </div> : <div></div>
+          }
+          {authuser?.fanwallCnt > 0 ?
+            <div className="rating-item">
+              <div className="count-letter"><span>{roundNumber(authuser.fanwallCnt ? authuser.fanwallCnt : 0)}</span></div>
+              <div className="type-letter"><HotIcon color="#EFA058" width={15} /><span>FanWall Post</span></div>
+            </div>
+            : <div></div>
+          }
         </div>
       }
       <div className="icons">

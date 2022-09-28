@@ -141,15 +141,16 @@
 
   .rating-container {
     position: absolute;
+    width: 300px;
     bottom: 55px;
     display: flex;
+    justify-content: space-evenly;
 
     .rating-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 100px;
 
       .count-letter {
         display: flex;
