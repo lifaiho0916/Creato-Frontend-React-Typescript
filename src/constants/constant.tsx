@@ -1,7 +1,7 @@
 const CONSTANT = {
     MAX_TEASER_FILE_SIZE: 30 * 1024 * 1024,
     MAX_VIDEO_FILE_SIZE: 100 * 1024 * 1024,
-    DARE_TITLE_SUGGESTIONS: [ 
+    DARE_TITLE_SUGGESTIONS: [
         "My dinner on Valentine's Day? 🌹",
         "Who to invite as guest in next video? 📽️",
         "New photography style in 2022? 📸",
@@ -25,7 +25,8 @@ const CONSTANT = {
         "Lantau island 🏝️",
         "20 different ways to complete a Christmas Song 🎤🎼",
         "A Finish day trip in Hong Kong"
-    ]
+    ],
+    PAYMENT_CURRENCIES: ['usd', 'idr', 'twd', 'hkd', 'myr']
 }
 
 export default CONSTANT;

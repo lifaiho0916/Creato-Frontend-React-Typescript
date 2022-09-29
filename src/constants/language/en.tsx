@@ -4,6 +4,7 @@ export const EN = {
   DAREME_DEADLINE_LIST: ["1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days", "10 days"],
   CREATOR_CATEGORY_LIST: ["Artist", "Author", "Blogger", "Fitness Instructor", "Gamer", "Instagram Creator", "Live Streamer", "Musician", "Photographer", "Podcaster", "Tiktok Creator", "Videographer", "YouTuber"],
   FUNDME_DEADLINE_LIST: ["3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days", "10 days", "11 days", "12 days", "13 days", "14 days"],
+  PAYMENT_CURRENCIES: ['USD', 'INR', 'TWD', 'HKD', 'MYR'],
   FUNDME_LETTER: {
     DETAIL_SUPERFAN_LETTER: 'Supporting the creator as SuperFan will get you entitled for the reward!',
     DETAIL_FREE_LETTER: 'Supporting the creator for Free!',
@@ -16,7 +17,7 @@ export const EN = {
     LETS_STARTED: "Let's Get Started",
     PURCHASE_DONUTS: 'Purchase Donuts to Creators',
     FUNDME_LIST: 'FundMe - Support Creative Journeys',
-    CREATORS_YOU_LIKE: 'Creators You also Like', 
+    CREATORS_YOU_LIKE: 'Creators You also Like',
     POST_ON_FANWALL: 'Posts on Fanwall',
   },
   HEADER_TITLE: {
@@ -422,7 +423,9 @@ export const EN = {
     PAY: 'Pay',
     YES: 'Yes',
     NO: 'No',
-    BUY_DONUTS: 'Buy donuts'
+    BUY_DONUTS: 'Buy donuts',
+    SELECT_CURRENCY: 'Select Currency',
+    YOU_WILL_PAY_IN: 'You will pay in'
   },
   SIGN_IN_DLG: {
     WELCOME: 'Welcome!',

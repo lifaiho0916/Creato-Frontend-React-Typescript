@@ -4,6 +4,7 @@ export const CH = {
   DAREME_DEADLINE_LIST: ["1 日", "2 日", "3 日", "4 日", "5 日", "6 日", "7 日", "8 日", "9 日", "10 日"],
   CREATOR_CATEGORY_LIST: ["藝人", "作家", "博主", "健身教練", "電競選手", "Instagram 創作者", "直播主", "音樂人", "攝影師", "播客", "Tiktok 創作者", "影片製作者", "YouTuber"],
   FUNDME_DEADLINE_LIST: ["3 日", "4 日", "5 日", "6 日", "7 日", "8 日", "9 日", "10 日", "11 日", "12 日", "13 日", "14 日"],
+  PAYMENT_CURRENCIES: ['美元', '印度盧比', '新台幣', '港幣', '馬幣'],
   FUNDME_LETTER: {
     DETAIL_SUPERFAN_LETTER: '以 SuperFan 身份支持創作者將獲得獎勵!',
     DETAIL_FREE_LETTER: '免費支持創作者!',
@@ -16,7 +17,7 @@ export const CH = {
     LETS_STARTED: "開始使用Creato吧!",
     PURCHASE_DONUTS: '購買甜甜圈支持創作者!',
     FUNDME_LIST: 'FundMe - 讓創作點子成真',
-    CREATORS_YOU_LIKE: '你可能喜愛的創作者們🎨', 
+    CREATORS_YOU_LIKE: '你可能喜愛的創作者們🎨',
     POST_ON_FANWALL: 'Fanwall 上的帖子',
   },
   HEADER_TITLE: {
@@ -422,7 +423,9 @@ export const CH = {
     CONFIRM: '付款',
     YES: '付款',
     NO: '重新輸入',
-    BUY_DONUTS: '購買甜甜圈'
+    BUY_DONUTS: '購買甜甜圈',
+    SELECT_CURRENCY: '選擇支付貨幣',
+    YOU_WILL_PAY_IN: '您將以這種貨幣支付'
   },
   SIGN_IN_DLG: {
     WELCOME: '歡迎!',

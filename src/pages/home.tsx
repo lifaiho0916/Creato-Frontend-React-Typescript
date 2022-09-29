@@ -21,7 +21,6 @@ import { RewardIcon } from "../assets/svg"
 import { paymentAction } from "../redux/actions/paymentActions"
 import { authAction } from "../redux/actions/authActions"
 import WelcomeDlg from "../components/general/welcomeDlg"
-import axios from "axios"
 import "../assets/styles/homeStyle.scss"
 
 const creatoList = [
@@ -112,22 +111,9 @@ const Home = () => {
     if (code) dispatch(authAction.inviteFriend(code, navigate))
   }, [code, dispatch, navigate])
 
-  const getRate = async () => {
-    axios.get('https://api.striperates.com/rates/usd',{
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'Stl9FxoyvK9jBWs4WEAPg1fqY3ktK8THauaHw4YW',
-      }
-    }).then((res: any) => {
-      const { data } = res
-      console.log(data.data[0].rates['gbp'])
-    })
-  }
-
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch(daremeAction.getDarmesOngoing());
-    getRate()
   }, [location, dispatch]);
 
   useEffect(() => {

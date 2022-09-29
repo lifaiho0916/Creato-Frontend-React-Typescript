@@ -28,9 +28,12 @@ export const paymentAction = {
   getStripeID: () => async (dispatch: Dispatch<any>) => {
     api.getStripeID()
       .then((result) => {
-        const { data } = result;
+        const { data } = result
+        
         if (data.success) dispatch({ type: SET_STRIPEID, payload: { stripeID: data.stripeID, cardNum: data.cardNum } });
-      }).catch((err) => console.log(err));
+      }).catch((err) => {
+        console.log(err)
+      })
   },
 
   connectStripe: (code: any, navigate: any) => async (dispatch: Dispatch<any>) => {

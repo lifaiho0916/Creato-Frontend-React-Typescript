@@ -26,11 +26,11 @@ const TransferDialog = (props: any) => {
                     </div>
                 }
                 {type === "transfer" &&
-                    <>
-                        <Select label="From" users={users} setOption={setFrom} option={from}/>
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}><Select label="From" users={users} setOption={setFrom} option={from}/></div>
                         <br/>
-                        <Select label="To" users={users} setOption={setTo} option={to}/>
-                    </>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}><Select label="To" users={users} setOption={setTo} option={to}/></div>
+                    </div>
                 }
 
                 <div className="add-donuts">
