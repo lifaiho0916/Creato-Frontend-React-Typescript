@@ -14,7 +14,6 @@ import { LanguageContext } from "../../../routes/authRoute"
 import { CreatoCoinIcon, RewardIcon, SpreadIcon, BackIcon, NoOfPeopleIcon } from "../../../assets/svg"
 import { SET_FUNDME_DETAIL_INITIAL } from "../../../redux/types"
 import "../../../assets/styles/fundme/fund/fundmeResultStyle.scss"
-import { daremeAction } from "../../../redux/actions/daremeActions"
 
 const FundmeResult = () => {
   const location = useLocation();
@@ -24,16 +23,14 @@ const FundmeResult = () => {
 
   const { fundmeId } = useParams();
   const fundmeState = useSelector((state: any) => state.fundme)
-  const fanwallState = useSelector((state: any) => state.fanwall)
   const userState = useSelector((state: any) => state.auth)
-  const dlgState = useSelector((state: any) => state.load.dlgState)
-  const prevRoute = useSelector((state: any) => state.load.prevRoute)
+  const loadState= useSelector((state: any) => state.load)
   const [isStay, setIsStay] = useState(false);
   const [isReward, setIsReward] = useState(false);
 
   const { fundme } = fundmeState
-  const { fanwall } = fanwallState
   const { user } = userState
+  const { prevRoute} = loadState
 
   const [pyramid, setPyramid] = useState(false)
   const [topFan, setTopFan] = useState(false)
@@ -212,61 +209,14 @@ const FundmeResult = () => {
                 }
               </>
             }
-            {/* 
-              <div className="funding-goal">
-                <div className="title">
-                  <CreatoCoinIcon color="#EFA058" />
-                  <label>{fundme.wallet < fundme.goal ? contexts.CREATE_FUNDME_LETTER.FUNDING_GOAL : contexts.CREATE_FUNDME_LETTER.GOAL_REACHED}</label>
-                </div>
-                <div className="process-bar">
-                  <div className="process-value" style={{ width: fundme.wallet < fundme.goal ? `${displayProcess(330)}px` : '330px' }}></div>
-                </div>
-                <div className="donuts-count">
-                  <span><span className={fundme.wallet >= fundme.goal ? "over-donuts" : ""}>{fundme.wallet.toLocaleString()}</span> / {fundme.goal.toLocaleString()} {contexts.GENERAL_LETTER.DONUTS}</span>
-                </div>
+            {user && fundme.owner._id !== user.id &&
+              <div className="post-fanwall-btn" onClick={() => {
+                if (fundme.fanwall === null) setIsStay(true)
+                else navigate(`/fundme/fanwall/detail/${fundme.fanwall._id}`)
+              }}>
+                <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
               </div>
-              <div className="result-button">
-                {user && fundme.owner._id === user.id ?
-                  <>
-                    {(fanwall && fanwall.writer && fanwall.posted === true) ?
-                      <>
-                        <div className="dare-btn" onClick={() => {
-                          dispatch({ type: SET_FANWALL_INITIAL });
-                          navigate(`/dareme/fanwall/detail/${fanwall._id}`);
-                        }} >
-                          <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
-                        </div>
-                      </>
-                      :
-                      <>
-                        <div className="dare-btn" onClick={() => { dispatch(fundmeAction.postFanwall(fundme._id, navigate)); }}>
-                          <ContainerBtn text={contexts.DAREME_FINISHED.POST_ON_FANWALL} styleType="fill" />
-                        </div>
-                      </>
-                    }
-                  </> :
-                  <>
-                    <div className="dare-btn" onClick={() => {
-                      if (fanwall === null || fanwall.posted === null || (fanwall.writer && fanwall.posted === false)) setIsStay(true);
-                      else {
-                        dispatch({ type: SET_FANWALL_INITIAL });
-                        navigate(`/dareme/fanwall/detail/${fanwall._id}`);
-                      }
-                    }}>
-                      <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
-                    </div>
-                  </>
-                }
-                <div className="dare-btn" style={{ marginTop: '30px' }} onClick={() => { setIsReward(true) }}>
-                  <ContainerBtn
-                    disabled={false}
-                    styleType="outline"
-                    text={'See SuperFan Reward'}
-                    icon={[<RewardIcon color="#EFA058" />, <RewardIcon color="white" />]}
-                  />
-                </div>
-              </div>
-            </div> */}
+            }
           </div>
         </>
       }

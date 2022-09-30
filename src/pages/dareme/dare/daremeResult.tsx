@@ -22,28 +22,24 @@ const DaremeResult = () => {
   const dispatch = useDispatch();
   const contexts = useContext(LanguageContext)
   const { daremeId } = useParams();
-  const daremeState = useSelector((state: any) => state.dareme);
-  const loadState = useSelector((state: any) => state.load);
-  const fanwallState = useSelector((state: any) => state.fanwall);
-  const userState = useSelector((state: any) => state.auth);
-  const dlgState = useSelector((state: any) => state.load.dlgState)
+  const daremeState = useSelector((state: any) => state.dareme)
+  const loadState = useSelector((state: any) => state.load)
+  const userState = useSelector((state: any) => state.auth)
+  
   const { dareme, refundDonuts } = daremeState
-  const { fanwall } = fanwallState
   const { user } = userState
-  const [resultOptions, setResultOptions] = useState<Array<any>>([])
-  const [maxOption, setMaxOption] = useState<any>(null)
-  const [isWin, setIsWin] = useState(false)
+  const { dlgState } = loadState
+
   const [isStay, setIsStay] = useState(false)
-  const [isWinOptionDlg, setIsWinOptionDlg] = useState(false)
-  const [winOptionId, setWinOptionId] = useState(false)
-  const [optionTitle, setOptionTitle] = useState("")
-  const [isCopyLinkDlg, setIsCopyLinkDlg] = useState(false)
+  // const [isWinOptionDlg, setIsWinOptionDlg] = useState(false)
+  // const [isCopyLinkDlg, setIsCopyLinkDlg] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [refund, setRefund] = useState(false)
   const [isRefund, setIsRefund] = useState(false)
   const [isMyDonuts, setIsMyDonuts] = useState(false)
   const [isSupport, setIsSupport] = useState(false)
   const [isCopyLink, setIsCopyLink] = useState(false)
+
   const [pyramid, setPyramid] = useState(false)
   const [topFan, setTopFan] = useState(false)
   const [time, setTime] = useState(0)
@@ -90,22 +86,8 @@ const DaremeResult = () => {
       setTime(dareme.time)
       setFlag(true)
       showCard()
-      // let total = 0;
-      // dareme.options.forEach((option: any) => { total += option.option.donuts; });
-      // setTotalDonuts(total);
-      // setResultOptions(dareme.options.sort((first: any, second: any) => {
-      //   return first.option.donuts > second.option.donuts ? -1 : first.option.donuts < second.option.donuts ? 1 :
-      //     first.option.date < second.option.date ? 1 : first.option.date > second.option.date ? -1 : 0
-      // }))
     }
   }, [dareme])
-
-  useEffect(() => {
-    if (resultOptions.length) {
-      setMaxOption(resultOptions.reduce((prev: any, current: any) => (prev.option.donuts > current.option.donuts) ? prev : current))
-      setIsWin(resultOptions.filter((option: any) => option.option.win === true).length ? true : false)
-    }
-  }, [resultOptions])
 
   useEffect(() => {
     if (dlgState.state) {
@@ -277,7 +259,7 @@ const DaremeResult = () => {
               icon: <SpreadIcon color="#EFA058" width="60px" height="60px" />
             }}
           />
-          <Dialog
+          {/* <Dialog
             display={isWinOptionDlg}
             exit={() => { setIsWinOptionDlg(false) }}
             wrapExit={() => { setIsWinOptionDlg(false) }}
@@ -314,7 +296,7 @@ const DaremeResult = () => {
             daremeId={daremeId}
             shareType={"win"}
             daremeTitle={dareme.title}
-          />
+          /> */}
           <div className="dareme-result-header"
             style={{ maxWidth: ((pyramid === false && topFan === true && code !== null) || (pyramid === true && topFan === true) || topFan === false) ? '1100px' : '720px' }}
           >
@@ -396,133 +378,14 @@ const DaremeResult = () => {
               }
             </>
           }
-          {/*
-            <div className="result-info">
-              <div className="result-win-options">
-                {resultOptions.length > 0 &&
-                  <>
-                    {isWin ?
-                      resultOptions.filter((option: any) => option.option.win === true).map((option: any, i: any) => (
-                        <div key={i} style={{ marginBottom: '8px' }}>
-                          <DareOption
-                            dareTitle={option.option.title}
-                            donuts={option.option.donuts}
-                            voters={option.option.voters}
-                            canVote={false}
-                            disabled={false}
-                            username={option.option.writer.name}
-                            leading={true}
-                            handleSubmit={() => { }}
-                          />
-                        </div>
-                      ))
-                      :
-                      resultOptions.filter((option: any) => option.option.donuts === maxOption.option.donuts).map((option: any, i: any) => (
-                        <div key={i} style={{ marginBottom: '8px' }}>
-                          <DareOption
-                            dareTitle={option.option.title}
-                            donuts={option.option.donuts}
-                            voters={option.option.voters}
-                            canVote={false}
-                            disabled={false}
-                            username={option.option.writer.name}
-                            leading={true}
-                            handleSubmit={() => {
-                              if (dareme.owner._id === user.id && user) {
-                                setWinOptionId(option.option._id);
-                                setOptionTitle(option.option.title);
-                                setIsWinOptionDlg(true);
-                              }
-                            }}
-                          />
-                        </div>
-                      ))
-                    }
-                  </>
-                }
-              </div>
-              {!isWin ?
-                <div className="tie-letter">
-                  {(user && dareme.owner._id === user.id) ?
-                    <span>
-                      Please decide which Dare option wins!<br /><br />
-                    </span>
-                    :
-                    <span>
-                      {contexts.DAREME_FINISHED.BEFORE_CREATOR_NAME + " " + dareme.owner.name + " " + contexts.DAREME_FINISHED.AFTER_CREATOR_NAME}
-                    </span>
-                  }
-                </div>
-                :
-                <div className="result-button">
-                  {user && dareme.owner._id === user.id ?
-                    <>
-                      {fanwall && fanwall.writer && fanwall.posted === true ?
-                        <>
-                          <div onClick={() => {
-                            dispatch({ type: SET_FANWALL_INITIAL });
-                            navigate(`/dareme/fanwall/detail/${fanwall._id}`);
-                          }} >
-                            <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
-                          </div>
-                        </>
-                        :
-                        <>
-                          <div onClick={() => { dispatch(daremeAction.postFanwall(dareme._id, navigate)); }}>
-                            <ContainerBtn text="Post on Fanwall" styleType="fill" />
-                          </div>
-                        </>
-                      }
-                    </> :
-                    <>
-                      <div onClick={() => {
-                        if (fanwall === null || fanwall.posted === null || (fanwall.writer && fanwall.posted === false)) setIsStay(true);
-                        else {
-                          dispatch({ type: SET_FANWALL_INITIAL });
-                          navigate(`/dareme/fanwall/detail/${fanwall._id}`);
-                        }
-                      }}>
-                        <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
-                      </div>
-                    </>
-                  }
-                </div>
-              }
-              <div className="dare-options scroll-bar" style={!isWin ? { maxHeight: '130px' } : {}}>
-                {isWin ?
-                  resultOptions.filter((option: any) => option.option.win !== true).map((option: any, i: any) => (
-                    <div key={i} className="dare-option">
-                      <DareOption
-                        dareTitle={option.option.title}
-                        donuts={option.option.donuts}
-                        voters={option.option.voters}
-                        canVote={false}
-                        disabled={false}
-                        username={option.option.writer.name}
-                        leading={false}
-                        handleSubmit={() => { }}
-                      />
-                    </div>
-                  ))
-                  :
-                  resultOptions.filter((option: any) => option.option.donuts !== maxOption.option.donuts).map((option: any, i: any) => (
-                    <div key={i} className="dare-option">
-                      <DareOption
-                        dareTitle={option.option.title}
-                        donuts={option.option.donuts}
-                        voters={option.option.voters}
-                        canVote={false}
-                        disabled={false}
-                        username={option.option.writer.name}
-                        leading={false}
-                        handleSubmit={() => { }}
-                      />
-                    </div>
-                  ))
-                }
-              </div>
-            </div> */}
-          {/* </div> */}
+          {user && dareme.owner._id !== user.id &&
+            <div className="post-fanwall-btn" onClick={() => {
+              if (dareme.fanwall === null) setIsStay(true)
+              else navigate(`/dareme/fanwall/detail/${dareme.fanwall._id}`)
+            }}>
+              <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
+            </div>
+          }
         </div>
       }
     </div>
