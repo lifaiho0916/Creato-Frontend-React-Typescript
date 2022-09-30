@@ -171,15 +171,10 @@ const AppRoutes = () => {
       <Route path="admin/referral_links" element={<AuthRoute child={<ReferralLinks />} routeType="private" />} />
       <Route path="admin/referral_links/:userId" element={<AuthRoute child={<ReferralLinkDetail />} routeType="private" />} />
 
-      <Route path="dareme/fanwall/post/:itemId" element={<AuthRoute child={<PostFanwall />} routeType="private" />} />
-      <Route path="dareme/fanwall/post/:itemId/upload" element={<AuthRoute child={<UploadFanWallVideo />} routeType="private" />} />
-      <Route path="dareme/fanwall/detail/:fanwallId" element={<AuthRoute child={<FanwallDetails />} />} />
-      <Route path="dareme/fanwall/detail/:fanwallId/content" element={<AuthRoute child={<WatchContent />} />} />
-
-      <Route path="fundme/fanwall/post/:itemId" element={<AuthRoute child={<PostFanwall />} routeType="private" />} />
-      <Route path="fundme/fanwall/post/:itemId/upload" element={<AuthRoute child={<UploadFanWallVideo />} routeType="private" />} />
-      <Route path="fundme/fanwall/detail/:fanwallId" element={<AuthRoute child={<FanwallDetails />} />} />
-      <Route path="fundme/fanwall/detail/:fanwallId/content" element={<AuthRoute child={<WatchContent />} />} />
+      <Route path="fanwall/post/:itemId" element={<AuthRoute child={<PostFanwall />} routeType="private" />} />
+      <Route path="fanwall/post/:itemId/upload" element={<AuthRoute child={<UploadFanWallVideo />} routeType="private" />} />
+      <Route path="fanwall/detail/:fanwallId" element={<AuthRoute child={<FanwallDetails />} />} />
+      <Route path="fanwall/detail/:fanwallId/content" element={<AuthRoute child={<WatchContent />} />} />
 
       <Route path="/not-founder-cover" element={<Error404 />} />
       <Route path="*" element={<Navigate to="/not-founder-cover" replace />} />

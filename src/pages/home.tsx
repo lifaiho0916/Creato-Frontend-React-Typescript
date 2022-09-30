@@ -407,25 +407,6 @@ const Home = () => {
         <div className="section">
           <div className="title">{contexts.HOME_LETTER.CREATORS_YOU_LIKE}</div>
           <div className="see-more" onClick={() => { navigate(`/creators`) }}>See More</div>
-          {/* <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
-          <div className="search-icon">
-            <SearchIcon color="#EFA058" width="30px" height="30px" />
-          </div>
-          <div className="categories scroll-bar" style={{ paddingLeft: "60px" }}>
-            {contexts.CREATOR_CATEGORY_LIST.map((category: any, i: any) => (
-              <div className="category" key={i}>
-                <CategoryBtn text={category} color="primary" />
-              </div>
-            ))}
-          </div>
-        </div> */}
           <div className="users scroll-bar">
             {users.map((user: any, i: any) => (
               <div key={i}>
@@ -473,8 +454,8 @@ const Home = () => {
                   finished={true}
                   fanwallData={fanwall}
                   handleSubmit={() => {
-                    if (fanwall?.item?.goal) navigate(`/fundme/fanwall/detail/${fanwall?._id}`)
-                    else navigate(`/dareme/fanwall/detail/${fanwall?._id}`)
+                    if (fanwall?.item?.goal) navigate(`/fanwall/detail/${fanwall?._id}`)
+                    else navigate(`/fanwall/detail/${fanwall?._id}`)
                   }}
                 />
                 <AvatarLink

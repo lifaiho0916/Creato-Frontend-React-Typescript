@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { fundmeAction } from "../../../redux/actions/fundmeActions"
+import { fanwallAction } from "../../../redux/actions/fanwallActions"
 import ContainerBtn from "../../../components/general/containerBtn"
 import PyramidCard from "../../../components/general/PyramidCard"
 import Missed from "../../../components/general/Missed"
@@ -16,21 +17,21 @@ import { SET_FUNDME_DETAIL_INITIAL } from "../../../redux/types"
 import "../../../assets/styles/fundme/fund/fundmeResultStyle.scss"
 
 const FundmeResult = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const contexts = useContext(LanguageContext);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const contexts = useContext(LanguageContext)
 
-  const { fundmeId } = useParams();
+  const { fundmeId } = useParams()
   const fundmeState = useSelector((state: any) => state.fundme)
   const userState = useSelector((state: any) => state.auth)
-  const loadState= useSelector((state: any) => state.load)
-  const [isStay, setIsStay] = useState(false);
-  const [isReward, setIsReward] = useState(false);
+  const loadState = useSelector((state: any) => state.load)
+  const [isStay, setIsStay] = useState(false)
+  const [isReward, setIsReward] = useState(false)
 
   const { fundme } = fundmeState
   const { user } = userState
-  const { prevRoute} = loadState
+  const { prevRoute } = loadState
 
   const [pyramid, setPyramid] = useState(false)
   const [topFan, setTopFan] = useState(false)
@@ -196,10 +197,10 @@ const FundmeResult = () => {
                 </div>
               }
             </div>
-            {(user && fundme.owner._id === user.id) &&
+            {(user && fundme.owner._id === user.id && fundme.finished === true) &&
               <>
                 {fundme.fanwall === null ?
-                  <div className="post-fanwall-btn" onClick={() => { dispatch(fundmeAction.postFanwall(fundme._id, navigate)) }}>
+                  <div className="post-fanwall-btn" onClick={() => { dispatch(fanwallAction.postFanwall(fundme._id, "FundMe", navigate)) }}>
                     <ContainerBtn text={contexts.DAREME_FINISHED.POST_ON_FANWALL} styleType="fill" />
                   </div>
                   :
@@ -209,7 +210,7 @@ const FundmeResult = () => {
                 }
               </>
             }
-            {user && fundme.owner._id !== user.id &&
+            {(user && fundme.owner._id !== user.id && fundme.finished === true) &&
               <div className="post-fanwall-btn" onClick={() => {
                 if (fundme.fanwall === null) setIsStay(true)
                 else navigate(`/fundme/fanwall/detail/${fundme.fanwall._id}`)

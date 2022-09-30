@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { daremeAction } from "../../../redux/actions/daremeActions"
+import { fanwallAction } from "../../../redux/actions/fanwallActions"
 import ContainerBtn from "../../../components/general/containerBtn"
 import Dialog from "../../../components/general/dialog"
 import VoteResult from "../../../components/general/VoteResult"
@@ -25,7 +26,7 @@ const DaremeResult = () => {
   const daremeState = useSelector((state: any) => state.dareme)
   const loadState = useSelector((state: any) => state.load)
   const userState = useSelector((state: any) => state.auth)
-  
+
   const { dareme, refundDonuts } = daremeState
   const { user } = userState
   const { dlgState } = loadState
@@ -365,10 +366,10 @@ const DaremeResult = () => {
               </div>
             }
           </div>
-          {(user && dareme.owner._id === user.id) &&
+          {(user && dareme.owner._id === user.id && dareme.finished === true) &&
             <>
               {dareme.fanwall === null ?
-                <div className="post-fanwall-btn" onClick={() => { dispatch(daremeAction.postFanwall(dareme._id, navigate)) }}>
+                <div className="post-fanwall-btn" onClick={() => { dispatch(fanwallAction.postFanwall(dareme._id, "DareMe" ,navigate)) }}>
                   <ContainerBtn text={contexts.DAREME_FINISHED.POST_ON_FANWALL} styleType="fill" />
                 </div>
                 :
@@ -378,7 +379,7 @@ const DaremeResult = () => {
               }
             </>
           }
-          {user && dareme.owner._id !== user.id &&
+          {(user && dareme.owner._id !== user.id && dareme.finished === true) &&
             <div className="post-fanwall-btn" onClick={() => {
               if (dareme.fanwall === null) setIsStay(true)
               else navigate(`/dareme/fanwall/detail/${dareme.fanwall._id}`)

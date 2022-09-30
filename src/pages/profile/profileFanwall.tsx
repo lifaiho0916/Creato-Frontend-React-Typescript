@@ -257,9 +257,7 @@ const ProfileFanwall = () => {
                             fanwallData={fanwall}
                             handleSubmit={() => {
                               dispatch({ type: SET_PREVIOUS_ROUTE, payload: user ? `/${user.personalisedUrl}/fanwall` : `/${authuser.personalisedUrl}/fanwall` });
-                              dispatch({ type: SET_FANWALL_INITIAL });
-                              if (fanwall.dareme.goal) navigate(`/fundme/fanwall/detail/${fanwall.id}`)
-                              else navigate(`/dareme/fanwall/detail/${fanwall.id}`)
+                              navigate(`/fanwall/detail/${fanwall.id}`)
                             }}
                           />
                           <AvatarLink
@@ -307,9 +305,7 @@ const ProfileFanwall = () => {
                             fanwallData={fanwall}
                             handleSubmit={() => {
                               dispatch({ type: SET_PREVIOUS_ROUTE, payload: user ? `/${user.personalisedUrl}/fanwall` : `/${authuser.personalisedUrl}/fanwall` });
-                              dispatch({ type: SET_FANWALL_INITIAL });
-                              if (fanwall.dareme.goal) navigate(`/fundme/fanwall/detail/${fanwall.id}`)
-                              else navigate(`/dareme/fanwall/detail/${fanwall.id}`)
+                              navigate(`/fanwall/detail/${fanwall.id}`)
                             }}
                           />
                           <AvatarLink

@@ -6,36 +6,63 @@ import {
   SET_FANWALLS,
   SET_FANWALL,
   SET_FANWALL_WINOPTION,
-  SET_FANWALL_TOPFANS,
   SET_USER,
   SET_FUNDME,
   SET_DAREME,
   SET_TIPS,
   SET_USERS,
+  SET_DAREME_DETAIL_INITIAL,
+  SET_FUNDME_DETAIL_INITIAL,
 } from "../types";
 import * as api from "../../api";
 
 export const fanwallAction = {
+  postFanwall: (itemId: any, type: any, navigate: any) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: SET_LOADING_TRUE })
+      let result = null
+      if (type === "dareme") result = await api.getFanwallByDareMeId(itemId)
+      else result = await api.getFanwallByFundMeId(itemId)
+      const { data } = result
+      if (data.success) {
+        const payload = data.payload
+        dispatch({ type: SET_LOADING_FALSE })
+        if (type === "dareme") {
+          dispatch({ type: SET_DAREME_DETAIL_INITIAL })
+          dispatch({ type: SET_DAREME, payload: payload.dareme })
+        } else {
+          dispatch({ type: SET_FUNDME_DETAIL_INITIAL })
+          dispatch({ type: SET_FUNDME, payload: payload.fundme })
+        }
+        if (payload.fanwall) dispatch({ type: SET_FANWALL, payload: payload.fanwall })
+        else dispatch({ type: SET_FANWALL_INITIAL })
+        navigate(`/fanwall/post/${itemId}?type=${type}`)
+      }
+    } catch (err: any) {
+      console.log(err)
+    }
+  },
+
   saveFanwall: (fanwall: any, itemId: any, navigate: any) => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_LOADING_TRUE });
-    let result: any = null;
-    let cover: any = null;
+    dispatch({ type: SET_LOADING_TRUE })
+    let result: any = null
+    let cover: any = null
     if (fanwall.video) {
       if (fanwall.video.preview?.indexOf('uploads') === -1) {
-        const formData = new FormData();
-        formData.append("file", fanwall.video);
+        const formData = new FormData()
+        formData.append("file", fanwall.video)
         const config = {
           headers: { "content-type": "multipart/form-data" },
-        };
+        }
         result = await api.uploadFanwall(formData, config);
       }
     }
     if (fanwall.cover) {
       if (fanwall.cover.preview?.indexOf('uploads') === -1) {
-        const formData = new FormData();
-        formData.append("file", fanwall.cover);
-        const config = { headers: { "content-type": "multipart/form-data" } };
-        cover = await api.selectCover(formData, config);
+        const formData = new FormData()
+        formData.append("file", fanwall.cover)
+        const config = { headers: { "content-type": "multipart/form-data" } }
+        cover = await api.selectCover(formData, config)
       }
     }
     api.saveFanwall({
@@ -50,46 +77,45 @@ export const fanwallAction = {
       posted: fanwall.posted
     }).then((result) => {
       const { data } = result;
-      dispatch({ type: SET_LOADING_FALSE });
+      dispatch({ type: SET_LOADING_FALSE })
       if (data.success) {
-        if(fanwall.admin) navigate('/admin/fanwalls')
-        else if (fanwall.type === 'dareme') navigate(`/dareme/result/${itemId}`);
-        else navigate(`/fundme/result/${itemId}`); 
+        if (fanwall.admin) navigate('/admin/fanwalls')
+        if (fanwall.type === 'DareMe') navigate(`/dareme/result/${itemId}`)
+        else if (fanwall.type === 'FundMe') navigate(`/fundme/result/${itemId}`)
       }
     }).catch(err => console.log(err));
   },
 
   getPostDetail: (fanwallId: any) => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_LOADING_TRUE });
+    dispatch({ type: SET_FANWALL_INITIAL })
+    dispatch({ type: SET_LOADING_TRUE })
     api.getPostDetail(fanwallId)
       .then((result: any) => {
-        const { data } = result;
+        const { data } = result
         if (data.success) {
-          dispatch({ type: SET_FANWALL_INITIAL, payload: data.fanwall.fundme ? 'fundme' : 'dareme' });
-          if (data.fanwall.dareme) {
-            dispatch({ type: SET_DAREME, payload: data.fanwall.dareme });
-            dispatch({ type: SET_FANWALL_WINOPTION, payload: data.winOption });
+          const { payload } = data
+          dispatch({ type: SET_FANWALL_INITIAL })
+          if (payload.fanwall.dareme) {
+            dispatch({ type: SET_FANWALL_WINOPTION, payload: payload.winOption })
           } else {
-            dispatch({ type: SET_FUNDME, payload: data.fanwall.fundme });
-            dispatch({ type: SET_FANWALL_WINOPTION, payload: null });
+            dispatch({ type: SET_FANWALL_WINOPTION, payload: null })
           }
-          dispatch({ type: SET_FANWALL_TOPFANS, payload: data.topFuns });
-          dispatch({ type: SET_FANWALL, payload: { fanwall: data.fanwall, itemType: data.fanwall.fundme ? 'fundme' : 'dareme' } });
-          dispatch({ type: SET_LOADING_FALSE });
+          dispatch({ type: SET_FANWALL, payload: payload.fanwall })
+          dispatch({ type: SET_LOADING_FALSE })
         }
-      }).catch((err: any) => console.log(err));
+      }).catch((err: any) => console.log(err))
   },
 
   getFanwallDetail: (fanwallId: any) => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_LOADING_TRUE });
+    dispatch({ type: SET_LOADING_TRUE })
     api.getPostDetail(fanwallId)
       .then((result: any) => {
-        const { data } = result;
+        const { data } = result
         if (data.success) {
-          dispatch({ type: SET_FANWALL, payload: { fanwall: data.fanwall, itemType: 'fundme' } });
-          dispatch({ type: SET_LOADING_FALSE });
+          dispatch({ type: SET_FANWALL, payload: { fanwall: data.fanwall, itemType: 'fundme' } })
+          dispatch({ type: SET_LOADING_FALSE })
         }
-      }).catch((err: any) => console.log(err));
+      }).catch((err: any) => console.log(err))
   },
 
   getFanwallsByPersonalUrl: (data: any) => async (dispatch: Dispatch<any>) => {

@@ -1,22 +1,21 @@
-import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fanwallAction } from "../../../redux/actions/fanwallActions";
-import VideoCardDesktop from "../../../components/dareme/videoCardDesktop";
-import VideoCardFanwall from "../../../components/fanwall/videoCardFanwall";
-import Title from "../../../components/general/title";
-import AvatarLink from "../../../components/dareme/avatarLink";
-import ContainerBtn from "../../../components/general/containerBtn";
-import Dialog from "../../../components/general/dialog";
-import Input from "../../../components/general/input";
-import { LanguageContext } from "../../../routes/authRoute";
-import { SET_FANWALL, SET_FANWALL_COVERFILE, SET_FANWALL_VIDEOFILE, SET_FANWALL_VIDEO_SIZETYPE } from "../../../redux/types";
-import { PlusIcon } from "../../../constants/awesomeIcons";
-import { DeleteIcon } from "../../../assets/svg";
-import { daremeAction } from "../../../redux/actions/daremeActions";
-import { fundmeAction } from "../../../redux/actions/fundmeActions";
-import CONSTANT from "../../../constants/constant";
-import '../../../assets/styles/fanwall/postFanwallStyle.scss';
+import { useContext, useEffect, useState } from "react"
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { fanwallAction } from "../../../redux/actions/fanwallActions"
+import VideoCardDesktop from "../../../components/dareme/videoCardDesktop"
+import VideoCardFanwall from "../../../components/fanwall/videoCardFanwall"
+import Title from "../../../components/general/title"
+import AvatarLink from "../../../components/dareme/avatarLink"
+import ContainerBtn from "../../../components/general/containerBtn"
+import Dialog from "../../../components/general/dialog"
+import Input from "../../../components/general/input"
+import { LanguageContext } from "../../../routes/authRoute"
+import { SET_FANWALL, SET_FANWALL_COVERFILE, SET_FANWALL_VIDEOFILE, SET_FANWALL_VIDEO_SIZETYPE } from "../../../redux/types"
+import { PlusIcon } from "../../../constants/awesomeIcons"
+import { DeleteIcon } from "../../../assets/svg"
+import { daremeAction } from "../../../redux/actions/daremeActions"
+import { fundmeAction } from "../../../redux/actions/fundmeActions"
+import '../../../assets/styles/fanwall/postFanwallStyle.scss'
 
 const PostFanwall = () => {
     const { itemId } = useParams();

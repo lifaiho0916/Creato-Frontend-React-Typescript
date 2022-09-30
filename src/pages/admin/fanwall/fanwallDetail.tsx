@@ -13,7 +13,6 @@ import { LanguageContext } from "../../../routes/authRoute";
 import { SET_FANWALL, SET_FANWALL_COVERFILE, SET_FANWALL_VIDEOFILE } from "../../../redux/types";
 import { PlusIcon } from "../../../constants/awesomeIcons";
 import { DeleteIcon } from "../../../assets/svg";
-import CONSTANT from "../../../constants/constant";
 import '../../../assets/styles/fanwall/postFanwallStyle.scss';
 
 const EditFanwall = () => {

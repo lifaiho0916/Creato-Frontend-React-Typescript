@@ -5,8 +5,6 @@ import {
   SET_FUNDME,
   SET_LOADING_TRUE,
   SET_LOADING_FALSE,
-  SET_FANWALL,
-  SET_FANWALL_INITIAL,
   SET_USER,
   SET_FUNDME_DETAIL_INITIAL,
   SET_DIALOG_STATE,
@@ -142,26 +140,10 @@ export const fundmeAction = {
       .then((result) => {
         const { data } = result;
         if (data.success) {
-          dispatch({ type: SET_FANWALL, payload: { fanwall: data.fanwall, itemType: 'fundme' } });
-          dispatch({ type: SET_FUNDME, payload: data.fundme });
+          dispatch({ type: SET_FUNDME, payload: data.fundme })
           dispatch({ type: SET_LOADING_FALSE });
         }
       }).catch((err) => console.log(err));
-  },
-
-  postFanwall: (fundmeId: any, navigate: any) => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_LOADING_TRUE });
-    api.getFanwallByFundMeId(fundmeId)
-      .then((result) => {
-        const { data } = result;
-        if (data.success) {
-          dispatch({ type: SET_FUNDME, payload: data.fundme });
-          dispatch({ type: SET_FANWALL_INITIAL, payload: 'fundme' });
-          if (data.fanwall) dispatch({ type: SET_FANWALL, payload: { fanwall: data.fanwall, itemType: "fundme" } });
-          dispatch({ type: SET_LOADING_FALSE });
-          navigate(`/fundme/fanwall/post/${fundmeId}`);
-        }
-      }).catch(err => console.log(err));
   },
 
   // ADMIN

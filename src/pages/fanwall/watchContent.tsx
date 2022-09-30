@@ -1,40 +1,37 @@
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import ReactPlayer from "react-player";
-import YouTubePlayer from "react-player/youtube";
 import { useSelector } from "react-redux";
 import Title from "../../components/general/title";
 import Button from "../../components/general/button";
 import Dialog from "../../components/general/dialog";
 import { fanwallAction } from "../../redux/actions/fanwallActions";
 import { SET_PREVIOUS_ROUTE } from "../../redux/types";
+import { BackIcon } from "../../assets/svg";
 import "../../assets/styles/fanwall/watchContentStyle.scss";
 
 const WatchContent = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { fanwallId } = useParams();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const { fanwallId } = useParams()
     const fanwallState = useSelector((state: any) => state.fanwall)
-    const fanwall = fanwallState.fanwall;
-    const userState = useSelector((state: any) => state.auth);
-    const user = userState.user;
-    const [isSignIn, setIsSignIn] = useState(false);
-    const [isUnLock, setIsUnLock] = useState(false);
-    const [isTopUp, setIsTopUp] = useState(false);
-    const playerRef = useRef<ReactPlayer | null>(null);
+    const fanwall = fanwallState.fanwall
+    const userState = useSelector((state: any) => state.auth)
+    const user = userState.user
+    const [isSignIn, setIsSignIn] = useState(false)
+    const [isUnLock, setIsUnLock] = useState(false)
+    const [isTopUp, setIsTopUp] = useState(false)
 
     const checkLock = () => {
-        if (user && fanwall.dareme && fanwall.dareme.options) {
-            if (user.id + "" === fanwall.writer._id + "") return false;
-            const options = fanwall.dareme.options.filter((option: any) => option.option.win === true);
-            for (let i = 0; i < options[0].option.voteInfo.length; i++) {
-                const voteInfo = options[0].option.voteInfo[i];
-                if ((voteInfo.voter + "" === user.id + "") && voteInfo.donuts >= 50) return false;
-            }
-            for (let i = 0; i < fanwall.unlocks.length; i++) if (user.id + "" === fanwall.unlocks[i].unlocker + "") return false;
-            return true;
-        } else return true;
+        if (user) {
+            if (user.role === "ADMIN") return false
+            if (user.id + "" === fanwall.writer._id + "") return false
+            const voteInfo = fanwall.dareme ? fanwall.dareme.voteInfo : fanwall.fundme.voteInfo
+            for (let i = 0; i < voteInfo.length; i++) if ((voteInfo[i].voter._id + "" === user.id + "") && voteInfo[i].superfan === true) return false
+            for (let i = 0; i < fanwall.unlocks.length; i++) if (user.id + "" === fanwall.unlocks[i].unlocker + "") return false
+            return true
+        } else return true
     }
     const transUrl = (channel: any) => {
         if (channel) {
@@ -45,14 +42,15 @@ const WatchContent = () => {
         else return 'https://youtube.com/embed/Ct9C8a33R0U';
     }
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+    useEffect(() => { window.scrollTo(0, 0) }, [location])
 
     return (
-        <div>
-            <div className="title-header">
-                <Title title="Watch Content" back={() => { navigate("/dareme/fanwall/detail/" + fanwallId) }} />
+        <div className="watch-content-top-wrapper">
+            <div className="header-part">
+                <div onClick={() => { navigate("/fanwall/detail/" + fanwallId) }}><BackIcon color="black" /></div>
+                <div className="page-title"><span>Watch Content</span></div>
+                <div>
+                </div>
             </div>
             <div className="watch-content-wrapper">
                 <Dialog
@@ -112,16 +110,6 @@ const WatchContent = () => {
                 <div className="watch-content-letter">
                     <span>Let's have a look at what you voted For!</span>
                 </div>
-                {/* <ReactPlayer                  
-                    className="react-player"
-                    url={fanwall.embedUrl}
-                    playing
-                /> */}
-                {/* <div className="react-player">
-                    <video controls autoPlay onAbort={() => console.log('video tag is aborted')}>
-                        <source src={fanwall.embedUrl}></source>
-                    </video>
-                </div> */}
                 <iframe src={transUrl(fanwall.embedUrl)}
                     width={'100%'}
                     height={'400px'}

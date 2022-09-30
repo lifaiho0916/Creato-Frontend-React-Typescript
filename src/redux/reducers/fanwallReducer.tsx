@@ -21,7 +21,6 @@ const INITIAL_STATE: any = {
     winOption: null,
     goal: null,
     wallet: null,
-    topFuns: [],
     fanwalls: [],
     itemType: null
 }
@@ -30,11 +29,9 @@ const fanwallReducer = (state: any = INITIAL_STATE, action: any) => {
     const { payload = null } = action;
     switch (action.type) {
         case actionTypes.SET_FANWALL:
-            return { ...state, fanwall: payload.fanwall, itemType: payload.itemType };
+            return { ...state, fanwall: payload }
         case actionTypes.SET_FANWALL_WINOPTION:
             return { ...state, winOption: payload };
-        case actionTypes.SET_FANWALL_TOPFANS:
-            return { ...state, topFuns: payload };
         case actionTypes.SET_FANWALLS:
             state.fanwalls = payload;
             return { ...state }
@@ -64,7 +61,7 @@ const fanwallReducer = (state: any = INITIAL_STATE, action: any) => {
                 fanwall: {
                     fundme: null,
                     dareme: null,
-                    wirter: null,
+                    writer: null,
                     video: null,
                     embedUrl: null,
                     message: null,
@@ -81,9 +78,7 @@ const fanwallReducer = (state: any = INITIAL_STATE, action: any) => {
                 winOption: null,
                 goal: null,
                 wallet: null,
-                fanwalls: [],
-                topFuns: [],
-                itemType: payload,
+                fanwalls: []
             };
         default:
             return state;

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPlayer from "react-player";
 import ContainerBtn from "../../components/general/containerBtn";
@@ -8,7 +8,7 @@ import Dialog from "../../components/general/dialog";
 import { LanguageContext } from "../../routes/authRoute";
 import { SET_FANWALL } from "../../redux/types";
 import CONSTANT from "../../constants/constant";
-import { AlbumIcon, DeleteIcon } from "../../assets/svg";
+import { AlbumIcon, DeleteIcon, BackIcon } from "../../assets/svg";
 import "../../assets/styles/dareme/create/uploadVideoStyle.scss";
 
 const UploadVideo = () => {
@@ -21,32 +21,30 @@ const UploadVideo = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [open, setOpen] = useState<boolean>(false);
     const contexts = useContext(LanguageContext);
+    const [searchParams, setSearchParams] = useSearchParams()
+    const type = searchParams.get("type")
 
     const handleSave = () => {
         if (fanwall.cover === null) {
-            const video: any = document.getElementById("element")?.firstChild;
-            let canvas = document.createElement("canvas") as HTMLCanvasElement;
-            let context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context?.drawImage(video, 0, 0);
-            let url = canvas.toDataURL('image/png');
+            const video: any = document.getElementById("element")?.firstChild
+            let canvas = document.createElement("canvas") as HTMLCanvasElement
+            let context = canvas.getContext('2d')
+            canvas.width = video.videoWidth
+            canvas.height = video.videoHeight
+            context?.drawImage(video, 0, 0)
+            let url = canvas.toDataURL('image/png')
             fetch(url)
                 .then(res => res.blob())
                 .then(blob => {
                     const imgfile = new File([blob], 'dot.png', blob);
-                    const imgFile = Object.assign(imgfile, { preview: url });
-                    const state = { ...fanwall, cover: imgFile };
-                    dispatch({ type: SET_FANWALL, payload: { fanwall: state, itemType: fanwallState.itemType } });
-                    if (fanwallState.itemType === 'dareme') navigate('/dareme/fanwall/post/' + itemId);
-                    else navigate('/fundme/fanwall/post/' + itemId);
-                });
+                    const imgFile = Object.assign(imgfile, { preview: url })
+                    const state = { ...fanwall, cover: imgFile }
+                    dispatch({ type: SET_FANWALL, payload: { fanwall: state, itemType: fanwallState.itemType } })
+                    navigate(`/fanwall/post/${itemId}?type=${type}`)
+                })
         }
-        else {
-            if (fanwallState.itemType === 'dareme') navigate('/dareme/fanwall/post/' + itemId);
-            else navigate('/fundme/fanwall/post/' + itemId);
-        }
-    };
+        else navigate(`/fanwall/post/${itemId}?type=${type}`)
+    }
 
     const handleUploadVideo = (e: any) => {
         const { files } = e.target;
@@ -72,18 +70,14 @@ const UploadVideo = () => {
     }, []);
 
     return (
-        <>
-            <div className="title-header">
-                <Title
-                    title={contexts.HEADER_TITLE.EXCLUSIVE_VIDEO_UPLOAD}
-                    back={() => {
-                        if (fanwall.cover === null && fanwall.video === null) {
-                            if (fanwallState.itemType === 'dareme') navigate('/dareme/fanwall/post/' + itemId);
-                            else navigate('/fundme/fanwall/post/' + itemId);
-                        }
-                        else setOpen(true);
-                    }}
-                />
+        <div className="upload-video-top-wrapper">
+            <div className="header-part">
+                <div onClick={() => {
+                    if (fanwall.cover === null && fanwall.video === null) navigate(`/fanwall/post/${itemId}?type=${type}`)
+                    else setOpen(true)
+                }}><BackIcon color="black" /></div>
+                <div className="page-title"><span>{contexts.HEADER_TITLE.EXCLUSIVE_VIDEO_UPLOAD}</span></div>
+                <div></div>
             </div>
             <div className="upload-Video-wrapper">
                 <Dialog
@@ -152,8 +146,8 @@ const UploadVideo = () => {
                             </div>
                         )}
             </div>
-        </>
-    );
-};
+        </div>
+    )
+}
 
-export default UploadVideo;
+export default UploadVideo

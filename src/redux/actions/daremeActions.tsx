@@ -6,7 +6,6 @@ import {
   SET_LOADING_TRUE,
   SET_LOADING_FALSE,
   SET_FANWALL,
-  SET_FANWALL_INITIAL,
   SET_USERS,
   SET_USER,
   SET_FANWALLS,
@@ -165,7 +164,6 @@ export const daremeAction = {
         const { data } = result
         if (data.success) {
           const payload = data.payload
-          dispatch({ type: SET_FANWALL, payload: { fanwall: payload.fanwall, itemType: 'dareme' } })
           dispatch({ type: SET_DAREME, payload: payload.dareme })
           dispatch({ type: SET_LOADING_FALSE })
         }
@@ -241,23 +239,6 @@ export const daremeAction = {
   },
 
   //-------------------------------------
-
-
-  postFanwall: (daremeId: any, navigate: any) => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_LOADING_TRUE });
-    api.getFanwallByDareMeId(daremeId)
-      .then((result) => {
-        const { data } = result;
-        if (data.success) {
-          dispatch({ type: SET_DAREME, payload: data.dareme });
-          dispatch({ type: SET_FANWALL_INITIAL, payload: 'dareme' });
-          if (data.fanwall) dispatch({ type: SET_FANWALL, payload: { fanwall: data.fanwall, itemType: "dareme" } });
-          dispatch({ type: SET_LOADING_FALSE });
-          navigate(`/dareme/fanwall/post/${daremeId}`);
-        }
-      }).catch(err => console.log(err));
-  },
-
   winDareOption: (optionId: any, daremeId: any) => async (dispatch: Dispatch<any>) => {
     api.winDareOption({ optionId: optionId, daremeId: daremeId })
       .then((result: any) => {
