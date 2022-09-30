@@ -25,7 +25,7 @@ const FanwallDetails = () => {
   const userState = useSelector((state: any) => state.auth)
   const loadState = useSelector((state: any) => state.load)
 
-  const { fanwall, winOption } = fanwallState
+  const { fanwall } = fanwallState
   const { user } = userState
   const { dlgState } = loadState
 
@@ -35,10 +35,12 @@ const FanwallDetails = () => {
   const [voters, setVoters] = useState<Array<any>>([])
   const [title, setTitle] = useState("")
   const [category, setCategory] = useState(0)
+  const [moreInfo, setMoreInfo] = useState(false)
+  const [winOption, setWinOption] = useState<any>(null)
+
   const [isSignIn, setIsSignIn] = useState(false)
   const [isUnLock, setIsUnLock] = useState(false)
   const [isTopUp, setIsTopUp] = useState(false)
-  const [moreInfo, setMoreInfo] = useState(false)
   const [openDelPostDlg, setOpenDelPostDlg] = useState(false)
   const [openWelcomeDlg, setOpenWelcomeDlg] = useState(false)
   const [openWelcomeDlg2, setOpenWelcomeDlg2] = useState(false)
@@ -91,6 +93,7 @@ const FanwallDetails = () => {
 
   useEffect(() => {
     if (fanwall.writer) {
+      setWinOption(fanwall.dareme ? fanwall.dareme.options.filter((option: any) => option.option.win === true)[0] : null)
       setVoters(fanwall.dareme ? fanwall.dareme.voteInfo : fanwall.fundme.voteInfo)
       setTitle(fanwall.dareme ? fanwall.dareme.title : fanwall.fundme.title)
       setCategory(fanwall.dareme ? fanwall.dareme.category : fanwall.fundme.category)
@@ -255,7 +258,7 @@ const FanwallDetails = () => {
                 <div onClick={() => { setMoreInfo(true) }} ><MoreIcon color="#EFA058" /></div>
                 <div className="drop-down-list" style={moreInfo === true ? { visibility: 'visible', opacity: 1 } : {}}>
                   <div className="list" onClick={() => {
-                    navigator.clipboard.writeText(`${process.env.REACT_APP_CLIENT_URL}/dareme/fanwall/detail/${fanwallId}`);
+                    navigator.clipboard.writeText(`${process.env.REACT_APP_CLIENT_URL}/fanwall/detail/${fanwallId}`);
                     setMoreInfo(false);
                   }}>
                     Copy link
@@ -282,7 +285,7 @@ const FanwallDetails = () => {
               </div>
             </div>
             <div className="dareme-category">
-              <CategoryBtn text={contexts.DAREME_CATEGORY_LIST[category]} />
+              <CategoryBtn text={fanwall.dareme ? contexts.DAREME_CATEGORY_LIST[category] : contexts.FUNDME_CATEGORY_LIST[category]} />
             </div>
             <div className="fanwall-mobile-card">
               <FanwallVideoCard
@@ -308,17 +311,17 @@ const FanwallDetails = () => {
                 </div>
               </div>
             }
-            {(fanwall.writer && winOption) &&
+            {winOption &&
               <div className="win-option">
                 <DareOption
                   canVote={false}
-                  donuts={winOption.donuts}
-                  voters={winOption.voters}
+                  donuts={winOption.option.donuts}
+                  voters={winOption.option.voters}
                   disabled={false}
                   leading={true}
-                  dareTitle={winOption.title}
+                  dareTitle={winOption.option.title}
                   handleSubmit={() => { }}
-                  username={winOption.writer.name}
+                  username={winOption.option.writer.name}
                 />
               </div>
             }

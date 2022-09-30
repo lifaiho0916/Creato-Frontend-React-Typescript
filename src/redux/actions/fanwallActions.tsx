@@ -5,7 +5,6 @@ import {
   SET_FANWALL_INITIAL,
   SET_FANWALLS,
   SET_FANWALL,
-  SET_FANWALL_WINOPTION,
   SET_USER,
   SET_FUNDME,
   SET_DAREME,
@@ -87,19 +86,13 @@ export const fanwallAction = {
   },
 
   getPostDetail: (fanwallId: any) => async (dispatch: Dispatch<any>) => {
-    dispatch({ type: SET_FANWALL_INITIAL })
     dispatch({ type: SET_LOADING_TRUE })
+    dispatch({ type: SET_FANWALL_INITIAL })
     api.getPostDetail(fanwallId)
       .then((result: any) => {
         const { data } = result
         if (data.success) {
           const { payload } = data
-          dispatch({ type: SET_FANWALL_INITIAL })
-          if (payload.fanwall.dareme) {
-            dispatch({ type: SET_FANWALL_WINOPTION, payload: payload.winOption })
-          } else {
-            dispatch({ type: SET_FANWALL_WINOPTION, payload: null })
-          }
           dispatch({ type: SET_FANWALL, payload: payload.fanwall })
           dispatch({ type: SET_LOADING_FALSE })
         }

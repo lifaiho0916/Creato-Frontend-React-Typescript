@@ -18,7 +18,6 @@ const INITIAL_STATE: any = {
     tipId: null,
     tip: null,
     tips: [],
-    winOption: null,
     goal: null,
     wallet: null,
     fanwalls: [],
@@ -30,8 +29,6 @@ const fanwallReducer = (state: any = INITIAL_STATE, action: any) => {
     switch (action.type) {
         case actionTypes.SET_FANWALL:
             return { ...state, fanwall: payload }
-        case actionTypes.SET_FANWALL_WINOPTION:
-            return { ...state, winOption: payload };
         case actionTypes.SET_FANWALLS:
             state.fanwalls = payload;
             return { ...state }
