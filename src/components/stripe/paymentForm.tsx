@@ -56,7 +56,7 @@ const CheckoutForm = (props: any) => {
       const response = await axios.get('https://api.striperates.com/rates/usd', {
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': 'Stl9FxoyvK9jBWs4WEAPg1fqY3ktK8THauaHw4YW',
+          'x-api-key': `${process.env.REACT_APP_STRIPE_CURRENCY_RATE_API_KEY}`,
         }
       })
       
