@@ -100,6 +100,8 @@ const DareOptions = () => {
         <div className="options">
           <div className="title">
             {contexts.DARE_OPTIONS_LETTER.EXPLAIN}
+            <br/><br/>
+            <span>1st Dare option will become winner if there is a tie.</span>
           </div>
           <div className="option-input">
             <Input
