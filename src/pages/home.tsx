@@ -405,9 +405,8 @@ const Home = () => {
       }
       {users.length > 0 &&
         <div className="section">
-          <div className="title">
-            {contexts.HOME_LETTER.CREATORS_YOU_LIKE}<span></span>
-          </div>
+          <div className="title">{contexts.HOME_LETTER.CREATORS_YOU_LIKE}</div>
+          <div className="see-more" onClick={() => { navigate(`/creators`) }}>See More</div>
           {/* <div
           style={{
             display: "flex",
