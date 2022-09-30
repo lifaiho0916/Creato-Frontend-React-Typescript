@@ -60,12 +60,37 @@ const creatos = [
   {
     property: 'normal',
     discountedPercent: 0,
+    donutCount: 5,
+  },
+  {
+    property: 'normal',
+    discountedPercent: 0,
+    donutCount: 10,
+  },
+  {
+    property: 'normal',
+    discountedPercent: 0,
+    donutCount: 20,
+  },
+  {
+    property: 'normal',
+    discountedPercent: 0,
     donutCount: 30,
+  },
+  {
+    property: 'normal',
+    discountedPercent: 0,
+    donutCount: 40,
   },
   {
     property: "normal",
     discountedPercent: 0,
     donutCount: 50,
+  },
+  {
+    property: "normal",
+    discountedPercent: 0,
+    donutCount: 80,
   },
   {
     property: "normal",

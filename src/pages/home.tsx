@@ -40,25 +40,30 @@ const creatoList = [
     discountedPercent: 20
   },
   {
-    property: "discountedPrice",
-    donutCount: 300,
-    discountedPercent: 10
+    property: 'normal',
+    discountedPercent: 0,
+    donutCount: 10,
   },
   {
-    property: "normal",
+    property: 'normal',
+    discountedPercent: 0,
+    donutCount: 20,
+  },
+  {
+    property: 'normal',
+    discountedPercent: 0,
     donutCount: 30,
-    discountedPercent: 0
+  },
+  {
+    property: 'normal',
+    discountedPercent: 0,
+    donutCount: 40,
   },
   {
     property: "normal",
-    donutCount: 100,
-    discountedPercent: 0
+    discountedPercent: 0,
+    donutCount: 50,
   },
-  {
-    property: "normal",
-    donutCount: 180,
-    discountedPercent: 0
-  }
 ];
 
 const Home = () => {
@@ -144,7 +149,7 @@ const Home = () => {
         setOpenWelcomeDlg2(true)
       }
     }
-  }, [dlgState]);
+  }, [dlgState, dispatch])
 
   return (
     <div className="home-wrapper">
@@ -349,8 +354,8 @@ const Home = () => {
         </div>
       </div>
       <div className="section">
-        <div className="title">{contexts.HOME_LETTER.GET_DONUTS_TO_DARE}</div>
-        <div className="see-more" onClick={() => { navigate(`/myaccount/shop`); }}>See More</div>
+        <div className="title">{contexts.HOME_LETTER.PURCHASE_DONUTS}</div>
+        {user && <div className="see-more" onClick={() => { navigate(`/myaccount/shop`); }}>See More</div>}
         <div className="donuts-list scroll-bar">
           {creatoList.map((creato, i) => (
             <div className="donuts" style={{ marginTop: '15px' }} key={i} onClick={() => {
