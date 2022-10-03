@@ -382,7 +382,7 @@ const DaremeResult = () => {
           {(user && dareme.owner._id !== user.id && dareme.finished === true) &&
             <div className="post-fanwall-btn" onClick={() => {
               if (dareme.fanwall === null) setIsStay(true)
-              else navigate(`/dareme/fanwall/detail/${dareme.fanwall._id}`)
+              else navigate(`/fanwall/detail/${dareme.fanwall._id}`)
             }}>
               <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
             </div>

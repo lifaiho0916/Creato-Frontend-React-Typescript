@@ -213,7 +213,7 @@ const FundmeResult = () => {
             {(user && fundme.owner._id !== user.id && fundme.finished === true) &&
               <div className="post-fanwall-btn" onClick={() => {
                 if (fundme.fanwall === null) setIsStay(true)
-                else navigate(`/fundme/fanwall/detail/${fundme.fanwall._id}`)
+                else navigate(`/fanwall/detail/${fundme.fanwall._id}`)
               }}>
                 <ContainerBtn text={contexts.DAREME_FINISHED.VIEW_ON_FANWALL} styleType="fill" />
               </div>
